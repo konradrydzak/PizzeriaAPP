@@ -3,15 +3,7 @@ Project for self learning purposes, featuring API (FastAPI), containers (Docker)
 
 Simulates a working pizza place.
 
-__*Work in progress - see development branch*__
-
-## Requirements
-
-- Filled Menu with many positions, names, prices and categories
-- Should allow to pick any combination of menu positions
-- Should let users pick each position many times
-- Total price of a single order should be updated live
-- Should store a history of orders
+*Work in progress
 
 ## Entity-Relationship Diagram
 ![PizzeriaAPP-ERD.png.png](docs/PizzeriaAPP-ERD.png "Simple ERD diagram for a pizza place")
