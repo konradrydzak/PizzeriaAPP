@@ -3,7 +3,7 @@ Project for self learning purposes, featuring API (FastAPI), containers (Docker)
 
 Simulates a working pizza place.
 
-*Work in progress
+__*Work in progress - see development branch*__
 
 ## Requirements
 
