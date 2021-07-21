@@ -12,7 +12,7 @@ class Menu(Base):
     Name = Column(String)
     Price = Column(Float)
 
-    ordereditems = relationship("OrderedItems", back_populates="menu")
+    ordereditems = relationship("OrderedItems", back_populates="menu", cascade="all, delete")
 
 
 class Orders(Base):
@@ -23,7 +23,7 @@ class Orders(Base):
     Comments = Column(String)
     Email = Column(String)
 
-    ordereditems = relationship("OrderedItems", back_populates="orders")
+    ordereditems = relationship("OrderedItems", back_populates="orders", cascade="all, delete")
 
 
 class OrderedItems(Base):

@@ -70,16 +70,25 @@ def get_order_by_id(db: Session, order_id: int):
 
 
 def add_order_to_orders(db: Session, order: schemas.AddOrder):
-    db_order = models.Orders(**order.dict(), TotalPrice=0)
+    db_order = models.Orders(Comments=order.Comments, Email=order.Email, TotalPrice=0)
     if db_order.Email is not None:
         if not EMAIL_REGEX.match(db_order.Email):
             raise HTTPException(status_code=400, detail="Email is invalid")
-
-    # Add initial ordereditems from array
-
     db.add(db_order)
     db.commit()
     db.refresh(db_order)
+
+    # Add initial ordered items in OrderedItems and update TotalPrice on corresponding order from Orders
+    for ordereditem in order.OrderedItems:
+        db_ordereditem = models.OrderedItems(OrderID=db_order.OrderID, MenuID=ordereditem.MenuID,
+                                             Quantity=ordereditem.Quantity,
+                                             UnitPrice=db.query(models.Menu).filter(
+                                                 models.Menu.MenuID == ordereditem.MenuID).first().Price)
+        db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
+        db.add(db_ordereditem)
+        db.commit()
+        db.refresh(db_order)
+        db.refresh(db_ordereditem)
     return db_order
 
 
@@ -118,11 +127,11 @@ def get_ordereditem_by_ordered_item_id(db: Session, ordered_item_id: int):
 
 
 def get_ordereditems_by_order_id(db: Session, order_id: int):
-    return db.query(models.OrderedItems).filter(models.OrderedItems.OrderID == order_id).first()
+    return db.query(models.OrderedItems).filter(models.OrderedItems.OrderID == order_id).all()
 
 
 def get_ordereditems_by_menu_id(db: Session, menu_id: int):
-    return db.query(models.OrderedItems).filter(models.OrderedItems.MenuID == menu_id).first()
+    return db.query(models.OrderedItems).filter(models.OrderedItems.MenuID == menu_id).all()
 
 
 def add_ordereditem_to_ordereditems(db: Session, ordereditem: schemas.AddOrderedItem):
