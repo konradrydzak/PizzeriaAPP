@@ -12,6 +12,13 @@ class AddItem(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "Name": "Pepperoni",
+                "Price": 23,
+                "Category": "Pizza",
+            }
+        }
 
 
 class EditItem(BaseModel):
@@ -21,6 +28,13 @@ class EditItem(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "Name": "Pepperoni",
+                "Price": 23,
+                "Category": "Pizza",
+            }
+        }
 
 
 ''' ORDERS '''
@@ -32,6 +46,12 @@ class AddOrder(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "Comments": "A comment for this order",
+                "Email": "adress@email.com",
+            }
+        }
 
 
 class EditOrder(BaseModel):
@@ -41,6 +61,13 @@ class EditOrder(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "TotalPrice": 42,
+                "Comments": "A comment for this order",
+                "Email": "adress@email.com",
+            }
+        }
 
 
 ''' ORDEREDITEMS '''
@@ -53,6 +80,13 @@ class AddOrderedItem(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "MenuID": 17,
+                "OrderID": 2,
+                "Quantity": 3,
+            }
+        }
 
 
 class EditOrderedItem(BaseModel):
@@ -63,3 +97,11 @@ class EditOrderedItem(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example": {
+                "MenuID": 17,
+                "OrderID": 2,
+                "Quantity": 3,
+                "UnitPrice": 7,
+            }
+        }
