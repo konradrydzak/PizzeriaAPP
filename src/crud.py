@@ -1,8 +1,12 @@
+import re
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from src import models
 from src import schemas
+
+EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
 ''' MENU '''
 
@@ -67,6 +71,10 @@ def get_order_by_id(db: Session, order_id: int):
 
 def add_order_to_orders(db: Session, order: schemas.AddOrder):
     db_order = models.Orders(**order.dict(), TotalPrice=0)
+    if db_order.Email is not None:
+        if not EMAIL_REGEX.match(db_order.Email):
+            raise HTTPException(status_code=400, detail="Email is invalid")
+
     db.add(db_order)
     db.commit()
     db.refresh(db_order)
@@ -78,6 +86,10 @@ def edit_order_in_orders(db: Session, order_id: int, order: schemas.EditOrder):
     if db_order is None:
         raise HTTPException(status_code=404, detail="Item not found")
     for var, value in vars(order).items():
+        if var == "Email" and value is not None:
+            if db_order.Email is not None:
+                if not EMAIL_REGEX.match(value):
+                    raise HTTPException(status_code=400, detail="Email is invalid")
         setattr(db_order, var, value) if value is not None else None  # Sets an attribute if it's provided
     db.commit()
     db.refresh(db_order)
@@ -89,4 +101,82 @@ def del_order_from_orders(db: Session, order_id: int):
     if db_order is None:
         raise HTTPException(status_code=404, detail="Item not found")
     db.delete(db_order)
+    db.commit()
+
+
+''' ORDEREDITEMS '''
+
+
+def get_all_ordereditems(db: Session):
+    return db.query(models.OrderedItems).order_by(models.OrderedItems.OrderedItemID.asc()).all()
+
+
+def get_ordereditem_by_ordered_item_id(db: Session, ordered_item_id: int):
+    return db.query(models.OrderedItems).filter(models.OrderedItems.OrderedItemID == ordered_item_id).first()
+
+
+def get_ordereditems_by_order_id(db: Session, order_id: int):
+    return db.query(models.OrderedItems).filter(models.OrderedItems.OrderID == order_id).first()
+
+
+def get_ordereditems_by_menu_id(db: Session, menu_id: int):
+    return db.query(models.OrderedItems).filter(models.OrderedItems.MenuID == menu_id).first()
+
+
+def add_ordereditem_to_ordereditems(db: Session, ordereditem: schemas.AddOrderedItem):
+    db_ordereditem = models.OrderedItems(**ordereditem.dict(),
+                                         UnitPrice=db.query(models.Menu).filter(
+                                             models.Menu.MenuID == ordereditem.MenuID).first().Price)
+    db.add(db_ordereditem)
+
+    # Update the price for added ordereditem in TotalPrice from Order
+    db_order = db.query(models.Orders).filter(
+        models.Orders.OrderID == db_ordereditem.OrderID).first()
+    db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
+
+    db.commit()
+    db.refresh(db_order)
+    db.refresh(db_ordereditem)
+    return db_ordereditem
+
+
+def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: schemas.EditOrderedItem):
+    db_ordereditem = db.query(models.OrderedItems).get(ordered_item_id)
+    if db_ordereditem is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    # Remove price for edited ordereditem in TotalPrice from Order
+    db_order = db.query(models.Orders).filter(
+        models.Orders.OrderID == db_ordereditem.OrderID).first()
+    db_order.TotalPrice -= db_ordereditem.UnitPrice * db_ordereditem.Quantity
+
+    for var, value in vars(ordereditem).items():
+        setattr(db_ordereditem, var, value) if value is not None else None  # Sets an attribute if it's provided
+    # If price was not set manually, prepare UnitPrice value from Menu
+    if ordereditem.UnitPrice is None:
+        db_ordereditem.UnitPrice = db.query(models.Menu).filter(
+            models.Menu.MenuID == db_ordereditem.MenuID).first().Price
+
+    # Update the price for edited ordereditem in TotalPrice from Order
+    db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
+
+    db.commit()
+    db.refresh(db_order)
+    db.refresh(db_ordereditem)
+    return db_ordereditem
+
+
+def del_ordereditem_from_ordereditems(db: Session, ordered_item_id: int):
+    db_ordereditem = db.query(models.OrderedItems).filter(models.OrderedItems.OrderedItemID == ordered_item_id).first()
+    if db_ordereditem is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    # Remove price for deleted ordereditem in TotalPrice from Order
+    db_order = db.query(models.Orders).filter(
+        models.Orders.OrderID == db_ordereditem.OrderID).first()
+    db_order.TotalPrice -= db_ordereditem.UnitPrice * db_ordereditem.Quantity
+
+    db.commit()
+    db.refresh(db_order)
+    db.delete(db_ordereditem)
     db.commit()
