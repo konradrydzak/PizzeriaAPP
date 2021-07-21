@@ -19,3 +19,20 @@ class EditItem(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class AddOrder(BaseModel):
+    Comments: Optional[str] = None
+    Email: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+class EditOrder(BaseModel):
+    TotalPrice: Optional[int] = None
+    Comments: Optional[str] = None
+    Email: Optional[str] = None
+
+    class Config:
+        orm_mode = True

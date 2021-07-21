@@ -22,6 +22,9 @@ def get_db():
         db.close()
 
 
+''' MENU '''
+
+
 # GET Full menu or some items from menu searched by name or by category
 @app.get("/menu")
 def read_menu(name: Optional[str] = None, category: Optional[str] = None, db: Session = Depends(get_db)):
@@ -53,7 +56,7 @@ def post_item_to_menu(item: schemas.AddItem, db: Session = Depends(get_db)):
 
 # PATCH data into an item from menu
 @app.patch("/menu/{menu_id}")
-def put_data_in_item(menu_id: int, item: schemas.EditItem, db: Session = Depends(get_db)):
+def patch_data_in_item(menu_id: int, item: schemas.EditItem, db: Session = Depends(get_db)):
     return crud.edit_item_in_menu(db=db, menu_id=menu_id, item=item)
 
 
@@ -61,6 +64,48 @@ def put_data_in_item(menu_id: int, item: schemas.EditItem, db: Session = Depends
 @app.delete("/menu/{menu_id}", status_code=204, response_class=Response)
 def del_item_from_menu(menu_id: int, db: Session = Depends(get_db)):
     crud.del_item_from_menu(db=db, menu_id=menu_id)
+
+
+''' ORDERS '''
+
+
+# GET All orders or some orders from orders searched by an email
+@app.get("/orders")
+def read_orders(email: Optional[str] = None, db: Session = Depends(get_db)):
+    if email:
+        orders = crud.get_orders_by_email(db, email=email)
+    else:
+        orders = crud.get_all_orders(db)
+    if not orders:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return orders
+
+
+# GET order from orders by ID
+@app.get("/orders/{order_id}")
+def read_order_by_id(order_id: int, db: Session = Depends(get_db)):
+    order_id = crud.get_order_by_id(db, order_id=order_id)
+    if order_id is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return order_id
+
+
+# POST an order to orders
+@app.post("/orders/", status_code=201)
+def post_order_to_orders(order: schemas.AddOrder, db: Session = Depends(get_db)):
+    return crud.add_order_to_orders(db=db, order=order)
+
+
+# PATCH data into an order from orders
+@app.patch("/orders/{order_id}")
+def patch_data_in_order(order_id: int, order: schemas.EditOrder, db: Session = Depends(get_db)):
+    return crud.edit_order_in_orders(db=db, order_id=order_id, order=order)
+
+
+# DELETE order from orders
+@app.delete("/orders/{order_id}", status_code=204, response_class=Response)
+def del_order_from_orders(order_id: int, db: Session = Depends(get_db)):
+    crud.del_order_from_orders(db=db, order_id=order_id)
 
 
 if __name__ == "__main__":
