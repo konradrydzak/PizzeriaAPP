@@ -49,7 +49,7 @@ def read_menu(name: Optional[str] = None, category: Optional[str] = None, db: Se
     elif category:
         menu = crud.get_menu_items_by_category(db, category=category)
     else:
-        menu = crud.get_menu_full(db)
+        menu = crud.get_all_menu(db)
     if not menu:
         raise HTTPException(status_code=404, detail="Item not found")
     return menu

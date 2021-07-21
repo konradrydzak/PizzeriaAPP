@@ -11,7 +11,7 @@ EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 ''' MENU '''
 
 
-def get_menu_full(db: Session):
+def get_all_menu(db: Session):
     return db.query(models.Menu).order_by(models.Menu.MenuID.asc()).all()
 
 
@@ -74,6 +74,8 @@ def add_order_to_orders(db: Session, order: schemas.AddOrder):
     if db_order.Email is not None:
         if not EMAIL_REGEX.match(db_order.Email):
             raise HTTPException(status_code=400, detail="Email is invalid")
+
+    # Add initial ordereditems from array
 
     db.add(db_order)
     db.commit()
@@ -149,6 +151,9 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
     db_order = db.query(models.Orders).filter(
         models.Orders.OrderID == db_ordereditem.OrderID).first()
     db_order.TotalPrice -= db_ordereditem.UnitPrice * db_ordereditem.Quantity
+
+    db.commit()
+    db.refresh(db_order)
 
     for var, value in vars(ordereditem).items():
         setattr(db_ordereditem, var, value) if value is not None else None  # Sets an attribute if it's provided
