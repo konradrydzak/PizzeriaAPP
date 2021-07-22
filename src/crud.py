@@ -153,22 +153,6 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
     if db_ordereditem is None:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    # Remove price for edited ordereditem in TotalPrice from Order
-    '''
-        NOTE: Because SQLAlchemy ORM does not provide a proper update function, 
-        all changes in attributes of ordereditem have to be done manually, 
-        which affects trigger (or event.listens_for) functionality.
-        Calling the event "before_update" is still using manually changed new values,
-        so here we need to write the TotalPrice reduction before changing the values
-        and then we can call "after_update" event to update TotalPrice accordingly.
-    '''
-    db_order = db.query(models.Orders).filter(
-        models.Orders.OrderID == db_ordereditem.OrderID).first()
-    db_order.TotalPrice -= db_ordereditem.UnitPrice * db_ordereditem.Quantity
-
-    db.commit()
-    db.refresh(db_order)
-
     for var, value in vars(ordereditem).items():
         setattr(db_ordereditem, var, value) if value is not None else None  # Sets an attribute if it's provided
     # If price was not set manually, prepare UnitPrice value from Menu
@@ -177,7 +161,23 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
             models.Menu.MenuID == db_ordereditem.MenuID).first().Price
 
     db.commit()
+
+    # Set TotalPrice in Order to 0
+    db_order = db.query(models.Orders).filter(
+        models.Orders.OrderID == db_ordereditem.OrderID).first()
+    db_order.TotalPrice = 0
+
+    # For each Item associated to Order add the Price * Quantity
+    db_items_in_order = db.query(models.OrderedItems).filter(
+        models.OrderedItems.OrderID == db_ordereditem.OrderID).all()
+    if db_items_in_order is not None:
+        for item in db_items_in_order:
+            db_order.TotalPrice += item.UnitPrice * item.Quantity
+
+    db.commit()
+    db.refresh(db_order)
     db.refresh(db_ordereditem)
+
     return db_ordereditem
 
 
@@ -212,11 +212,6 @@ def change_totalprice_value(connection, target, should_add):
 
 @event.listens_for(models.OrderedItems, 'after_insert')
 def change_totalprice_after_insert(_, connection, target):
-    change_totalprice_value(connection, target, should_add=True)
-
-
-@event.listens_for(models.OrderedItems, 'after_update')
-def change_totalprice_after_update(_, connection, target):
     change_totalprice_value(connection, target, should_add=True)
 
 
