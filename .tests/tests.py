@@ -8,6 +8,8 @@ import requests
 
 url = "http://127.0.0.1:8000"
 
+''' REST API CRUD FUNCTIONALITY  TESTS '''
+
 ''' MENU TESTS '''
 
 MenuID = 0  # global variable
@@ -350,3 +352,67 @@ def test_order_to_check_total_price():
 
     # Finally delete order
     requests.delete(url + "/orders/" + str(OrderID))
+
+
+''' DIFFERENT SCENARIO TESTS '''
+
+
+def test_post_not_enough_data_in_menu():
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "Name": "Not enough data"
+    }
+    response = requests.post(url + "/menu", data=json.dumps(data),
+                             headers=headers)
+    resp_body = response.json()
+    assert response.status_code == 422
+    assert resp_body['detail'][0]['msg'] == "field required"
+    assert resp_body['detail'][0]['type'] == "value_error.missing"
+
+
+def test_post_lorem_ipsum_to_orders():
+    global OrderID
+    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " \
+           "Phasellus at elit risus. Nulla et consectetur felis. Cras quis ultricies lacus. " \
+           "Fusce vulputate est risus, nec gravida enim sagittis vel. " \
+           "Duis ligula magna, finibus nec est sed, cursus sodales purus. In ut diam eget dui sollicitudin semper. " \
+           "Morbi sodales mi sed est tempor condimentum. Vivamus a porttitor ipsum. Ut ut iaculis augue. " \
+           "Quisque lacinia est ornare justo mollis feugiat. Sed hendrerit porta metus et tempor."
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "Comments": text
+    }
+    response = requests.post(url + "/orders", data=json.dumps(data),
+                             headers=headers)
+    assert response.status_code == 201
+    resp_body = response.json()
+    OrderID = resp_body['OrderID']
+    requests.delete(url + "/orders/" + str(OrderID))
+
+
+def test_post_none_to_menu():
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "Name": None,
+        "Price": None,
+        "Category": None
+    }
+    response = requests.post(url + "/menu", data=json.dumps(data),
+                             headers=headers)
+    resp_body = response.json()
+    assert response.status_code == 422
+    assert resp_body['detail'][0]['msg'] == "none is not an allowed value"
+    assert resp_body['detail'][0]['type'] == "type_error.none.not_allowed"
