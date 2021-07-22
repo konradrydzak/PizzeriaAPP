@@ -1,8 +1,8 @@
 import re
 
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 from sqlalchemy import event
+from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 
 from src import models
@@ -81,16 +81,17 @@ def add_order_to_orders(db: Session, order: schemas.AddOrder):
     db.refresh(db_order)
 
     # Add initial ordered items in OrderedItems and update TotalPrice on corresponding order from Orders
-    for ordereditem in order.OrderedItems:
-        db_ordereditem = models.OrderedItems(OrderID=db_order.OrderID, MenuID=ordereditem.MenuID,
-                                             Quantity=ordereditem.Quantity,
-                                             UnitPrice=db.query(models.Menu).filter(
-                                                 models.Menu.MenuID == ordereditem.MenuID).first().Price)
-        # db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
-        db.add(db_ordereditem)
-        db.commit()
-        db.refresh(db_order)
-        db.refresh(db_ordereditem)
+    if order.OrderedItems is not None:
+        for ordereditem in order.OrderedItems:
+            db_ordereditem = models.OrderedItems(OrderID=db_order.OrderID, MenuID=ordereditem.MenuID,
+                                                 Quantity=ordereditem.Quantity,
+                                                 UnitPrice=db.query(models.Menu).filter(
+                                                     models.Menu.MenuID == ordereditem.MenuID).first().Price)
+            # db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
+            db.add(db_ordereditem)
+            db.commit()
+            db.refresh(db_order)
+            db.refresh(db_ordereditem)
     return db_order
 
 
@@ -188,6 +189,9 @@ def del_ordereditem_from_ordereditems(db: Session, ordered_item_id: int):
     db.commit()
     db.delete(db_ordereditem)
     db.commit()
+
+
+''' TRIGGERS '''
 
 
 def change_totalprice_value(connection, target, should_add):
