@@ -10,7 +10,8 @@ from src import schemas
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
-''' MENU '''
+
+# MENU
 
 
 def get_all_menu(db: Session):
@@ -33,6 +34,7 @@ def add_item_to_menu(db: Session, item: schemas.AddItem):
     db_item = models.Menu(**item.dict())
     db.add(db_item)
     db.commit()
+
     db.refresh(db_item)
     return db_item
 
@@ -44,6 +46,7 @@ def edit_item_in_menu(db: Session, menu_id: int, item: schemas.EditItem):
     for var, value in vars(item).items():
         setattr(db_item, var, value) if value is not None else None  # Sets an attribute if it's provided
     db.commit()
+
     db.refresh(db_item)
     return db_item
 
@@ -56,7 +59,7 @@ def del_item_from_menu(db: Session, menu_id: int):
     db.commit()
 
 
-''' ORDERS '''
+# ORDERS
 
 
 def get_all_orders(db: Session):
@@ -71,27 +74,25 @@ def get_order_by_id(db: Session, order_id: int):
     return db.query(models.Orders).filter(models.Orders.OrderID == order_id).first()
 
 
-def add_order_to_orders(db: Session, order: schemas.AddOrder):
+def add_order(db: Session, order: schemas.AddOrder):
     db_order = models.Orders(Comments=order.Comments, Email=order.Email, TotalPrice=0)
     if db_order.Email is not None:
         if not EMAIL_REGEX.match(db_order.Email):
             raise HTTPException(status_code=400, detail="Email is invalid")
     db.add(db_order)
     db.commit()
-    db.refresh(db_order)
 
-    # Add initial ordered items in OrderedItems and update TotalPrice on corresponding order from Orders
+    # Add initial ordered items in OrderedItems
     if order.OrderedItems is not None:
         for ordereditem in order.OrderedItems:
             db_ordereditem = models.OrderedItems(OrderID=db_order.OrderID, MenuID=ordereditem.MenuID,
                                                  Quantity=ordereditem.Quantity,
                                                  UnitPrice=db.query(models.Menu).filter(
                                                      models.Menu.MenuID == ordereditem.MenuID).first().Price)
-            # db_order.TotalPrice += db_ordereditem.UnitPrice * db_ordereditem.Quantity
             db.add(db_ordereditem)
             db.commit()
-            db.refresh(db_order)
-            db.refresh(db_ordereditem)
+
+    db.refresh(db_order)
     return db_order
 
 
@@ -106,6 +107,7 @@ def edit_order_in_orders(db: Session, order_id: int, order: schemas.EditOrder):
                     raise HTTPException(status_code=400, detail="Email is invalid")
         setattr(db_order, var, value) if value is not None else None  # Sets an attribute if it's provided
     db.commit()
+
     db.refresh(db_order)
     return db_order
 
@@ -118,7 +120,7 @@ def del_order_from_orders(db: Session, order_id: int):
     db.commit()
 
 
-''' ORDEREDITEMS '''
+# ORDEREDITEMS
 
 
 def get_all_ordereditems(db: Session):
@@ -144,6 +146,7 @@ def add_ordereditem_to_ordereditems(db: Session, ordereditem: schemas.AddOrdered
 
     db.add(db_ordereditem)
     db.commit()
+
     db.refresh(db_ordereditem)
     return db_ordereditem
 
@@ -175,9 +178,8 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
             db_order.TotalPrice += item.UnitPrice * item.Quantity
 
     db.commit()
-    db.refresh(db_order)
-    db.refresh(db_ordereditem)
 
+    db.refresh(db_ordereditem)
     return db_ordereditem
 
 
@@ -186,12 +188,11 @@ def del_ordereditem_from_ordereditems(db: Session, ordered_item_id: int):
     if db_ordereditem is None:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    db.commit()
     db.delete(db_ordereditem)
     db.commit()
 
 
-''' TRIGGERS '''
+# TRIGGERS
 
 
 def change_totalprice_value(connection, target, should_add):
@@ -207,7 +208,6 @@ def change_totalprice_value(connection, target, should_add):
         db_order.TotalPrice -= db_ordereditem.UnitPrice * db_ordereditem.Quantity
 
     db.commit()
-    db.refresh(db_order)
 
 
 @event.listens_for(models.OrderedItems, 'after_insert')

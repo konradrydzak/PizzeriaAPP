@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
-''' MENU '''
+# MENU
 
 
 class AddItem(BaseModel):
@@ -37,7 +37,7 @@ class EditItem(BaseModel):
         }
 
 
-''' ORDEREDITEMS '''
+# ORDEREDITEMS
 
 
 class BaseOrderedItem(BaseModel):
@@ -88,7 +88,7 @@ class EditOrderedItem(BaseOrderedItem):
         }
 
 
-''' ORDERS '''
+# ORDERS
 
 
 class BaseOrder(BaseModel):

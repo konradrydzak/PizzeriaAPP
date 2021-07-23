@@ -38,7 +38,7 @@ def get_db():
         db.close()
 
 
-''' MENU '''
+# MENU
 
 
 # GET Full menu or some items from menu searched by name or by category
@@ -82,7 +82,7 @@ def del_item_from_menu(menu_id: int, db: Session = Depends(get_db)):
     crud.del_item_from_menu(db=db, menu_id=menu_id)
 
 
-''' ORDERS '''
+# ORDERS
 
 
 # GET All orders or some orders from orders searched by an email
@@ -109,7 +109,7 @@ def read_order_by_order_id(order_id: int, db: Session = Depends(get_db)):
 # POST an order to orders
 @app.post("/orders", status_code=201, tags=['orders'])
 def post_order_to_orders(order: schemas.AddOrder, db: Session = Depends(get_db)):
-    return crud.add_order_to_orders(db=db, order=order)
+    return crud.add_order(db=db, order=order)
 
 
 # PATCH data in an order from orders
@@ -124,7 +124,7 @@ def del_order_from_orders(order_id: int, db: Session = Depends(get_db)):
     crud.del_order_from_orders(db=db, order_id=order_id)
 
 
-''' ORDEREDITEMS '''
+# ORDEREDITEMS
 
 
 # GET All ordered items from ordereditems

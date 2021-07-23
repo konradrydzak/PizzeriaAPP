@@ -8,11 +8,11 @@ import requests
 
 url = "http://127.0.0.1:8000"
 
-''' REST API CRUD FUNCTIONALITY  TESTS '''
+# REST API CRUD FUNCTIONALITY  TESTS
 
-''' MENU TESTS '''
+# MENU TESTS
 
-MenuID = 0  # global variable
+MenuID = 0
 
 
 def test_menu_endpoint_status_code_equals_200():
@@ -91,12 +91,13 @@ def test_menu_wrong_id_get_endpoint():
     assert type(resp_body['detail']) == str
 
 
-''' ORDERS AND ORDEREDITEMS TEST '''
+# ORDERS AND ORDEREDITEMS TEST
 
-OrderID = 0  # global variable
-OrderedItemID = 0  # global variable
+OrderID = 0
+OrderedItemID = 0
 
-''' ORDERS TESTS '''
+
+# ORDERS TESTS
 
 
 def test_orders_post_endpoint():
@@ -170,7 +171,7 @@ def test_orders_patch_data_endpoint():
     assert type(resp_body['TotalPrice']) == float
 
 
-''' ORDEREDITEMS TESTS '''
+# ORDEREDITEMS TESTS
 
 
 def test_ordereditems_post_endpoint():
@@ -281,7 +282,8 @@ def test_orders_wrong_id_get_endpoint():
     assert type(resp_body['detail']) == str
 
 
-# GENERAL TEST TO CALCULATE IF TOTAL PRICE IS GOOD
+# GENERAL TEST TO CALCULATE IF TOTAL PRICE IS CORRECT
+
 def test_order_to_check_total_price():
     global OrderID
     global OrderedItemID
@@ -354,7 +356,7 @@ def test_order_to_check_total_price():
     requests.delete(url + "/orders/" + str(OrderID))
 
 
-''' DIFFERENT SCENARIO TESTS '''
+# DIFFERENT SCENARIO TESTS
 
 
 def test_post_not_enough_data_in_menu():

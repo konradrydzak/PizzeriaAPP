@@ -6,8 +6,7 @@ from src.config import config
 
 # Setup a database connection with SQLAlchemy
 params = config()
-DATABASE_URL = \
-    f"postgres://{params['user']}:{params['password']}@{params['host']}:{params['port']}/{params['database']}"
+DATABASE_URL = params['database_url']
 
 engine = create_engine(DATABASE_URL)
 
