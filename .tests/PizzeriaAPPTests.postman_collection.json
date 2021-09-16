@@ -9,7 +9,7 @@
 			"name": "Menu Tests",
 			"item": [
 				{
-					"name": "POST an item to Menu 201 status code and received correct JSON response",
+					"name": "Menu_AddItem_Returns201WithBody",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -71,7 +71,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Menu endpoint 200 status code",
+					"name": "Menu_GetAllItems_Returns200",
 					"event": [
 						{
 							"listen": "test",
@@ -101,7 +101,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Menu item by MenuID 200 status code and received correct JSON response",
+					"name": "Menu_GetItemByMenuID_Returns201WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -139,7 +139,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH an item in Menu 200 status code and received correct JSON response",
+					"name": "Menu_EditItem_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -192,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE an item from Menu 204 status code",
+					"name": "Menu_DeleteItem_Returns204",
 					"event": [
 						{
 							"listen": "test",
@@ -223,7 +223,7 @@
 					"response": []
 				},
 				{
-					"name": "GET an item from Menu with wrong MenuID 404 status code and received correct JSON response",
+					"name": "Menu_GetItemWithWrongID_Returns404WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -264,7 +264,7 @@
 					"name": "Additional preparation for later tests",
 					"item": [
 						{
-							"name": "POST an item to Menu 201 status code",
+							"name": "Menu_AddItem_Returns201",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -322,7 +322,7 @@
 					]
 				},
 				{
-					"name": "POST an item to Orders 201 status code and received correct JSON response",
+					"name": "Orders_AddItem_Returns201WithBody",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -384,7 +384,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Orders endpoint 200 status code",
+					"name": "Orders_GetAllItems_Returns200",
 					"event": [
 						{
 							"listen": "test",
@@ -414,7 +414,7 @@
 					"response": []
 				},
 				{
-					"name": "GET Orders item by OrderID 200 status code and received correct JSON response",
+					"name": "Orders_GetItemByOrderID_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -452,7 +452,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH an item in Orders 200 status code and received correct JSON response",
+					"name": "Orders_EditItem_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -505,7 +505,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE an item from Orders 204 status code",
+					"name": "Orders_DeleteItem_Returns204",
 					"event": [
 						{
 							"listen": "test",
@@ -536,7 +536,7 @@
 					"response": []
 				},
 				{
-					"name": "GET an item from Orders with wrong OrderID 404 status code and received correct JSON response",
+					"name": "Orders_GetItemWithWrongID_Returns404WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -577,7 +577,7 @@
 					"name": "Additional preparation for later tests",
 					"item": [
 						{
-							"name": "POST an item to Menu 201 status code Copy",
+							"name": "Menu_AddItem_Returns201",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -633,7 +633,7 @@
 							"response": []
 						},
 						{
-							"name": "POST an item to Orders 201 status code",
+							"name": "Orders_AddItem_Returns201",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -691,7 +691,7 @@
 					]
 				},
 				{
-					"name": "POST an item to OrderedItems 201 status code and received correct JSON response",
+					"name": "OrderedItems_AddItem_Returns201WithBody",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -754,7 +754,7 @@
 					"response": []
 				},
 				{
-					"name": "GET OrderedItems endpoint 200 status code",
+					"name": "OrderedItems_GetAllItems_Returns200",
 					"event": [
 						{
 							"listen": "test",
@@ -784,7 +784,7 @@
 					"response": []
 				},
 				{
-					"name": "GET OrderedItems item by OrderedItemID status code 200 and received correct JSON response",
+					"name": "OrderedItems_GetItemByOrderedItemID_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -823,7 +823,7 @@
 					"response": []
 				},
 				{
-					"name": "GET OrderedItems item by OrderID status code 200 and received correct JSON response",
+					"name": "OrderedItems_GetItemByOrderID_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -863,7 +863,7 @@
 					"response": []
 				},
 				{
-					"name": "GET OrderedItems item by MenuID status code 200 and received correct JSON response",
+					"name": "OrderedItems_GetItemByMenuID_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -903,7 +903,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH an item in OrderedItems 200 status code and received correct JSON response",
+					"name": "OrderedItems_EditItem_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -957,7 +957,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE an item from OrderedItems 204 status code",
+					"name": "OrderedItems_DeleteItem_Returns204",
 					"event": [
 						{
 							"listen": "test",
@@ -988,7 +988,7 @@
 					"response": []
 				},
 				{
-					"name": "GET an item from OrderedItems with wrong OrderedItemID 404 status code and received correct JSON response",
+					"name": "OrderedItems_GetItemWithWrongID_Returns404WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -1023,10 +1023,10 @@
 			]
 		},
 		{
-			"name": "Other Tests (more complex)",
+			"name": "Other Tests (more advanced)",
 			"item": [
 				{
-					"name": "TotalPrice correct calculation tests",
+					"name": "TotalPrice correct calculation tests Copy",
 					"item": [
 						{
 							"name": "TotalPrice test for value to be equal 0 after initial empty Order creation",
@@ -1035,7 +1035,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "POST an item to Orders (with no initial OrderedItems) 201 status code",
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1093,7 +1093,7 @@
 									]
 								},
 								{
-									"name": "GET Orders item by OrderID assert initial TotalPrice equal 0",
+									"name": "Orders_GetItem_TotalPriceEquals0",
 									"event": [
 										{
 											"listen": "test",
@@ -1133,7 +1133,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "POST an item to Menu 201 status code",
+											"name": "Menu_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1189,7 +1189,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to Orders (with initial OrderedItems with Price equal 46) 201 status code Copy",
+											"name": "Orders_AddItemWithInitialOrderedItems_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1247,7 +1247,7 @@
 									]
 								},
 								{
-									"name": "GET Orders item by OrderID assert initial TotalPrice equal 46",
+									"name": "Orders_GetItem_TotalPriceEquals46",
 									"event": [
 										{
 											"listen": "test",
@@ -1287,7 +1287,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "POST an item to Menu 201 status code",
+											"name": "Menu_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1343,7 +1343,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to Orders (with no initial OrderedItems) 201 status code",
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1399,7 +1399,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to OrderedItems 201 status code",
+											"name": "OrderedItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1457,7 +1457,7 @@
 									]
 								},
 								{
-									"name": "GET Orders item by OrderID assert initial TotalPrice equal 46",
+									"name": "Orders_GetItem_TotalPriceEquals46",
 									"event": [
 										{
 											"listen": "test",
@@ -1497,7 +1497,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "POST an item to Menu 201 status code",
+											"name": "Menu_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1553,7 +1553,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to Orders (with no initial OrderedItems) 201 status code",
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1609,7 +1609,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to OrderedItems 201 status code",
+											"name": "OrderedItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1667,7 +1667,7 @@
 											"response": []
 										},
 										{
-											"name": "PATCH an item in OrderedItems 200 status code",
+											"name": "OrderedItems_EditItem_Returns200",
 											"event": [
 												{
 													"listen": "test",
@@ -1716,7 +1716,7 @@
 									]
 								},
 								{
-									"name": "GET Orders item by OrderID assert TotalPrice after PATCH equal 100",
+									"name": "Orders_GetItem_TotalPriceEquals100",
 									"event": [
 										{
 											"listen": "test",
@@ -1756,7 +1756,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "POST an item to Menu 201 status code",
+											"name": "Menu_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1812,7 +1812,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to Orders (with no initial OrderedItems) 201 status code",
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1868,7 +1868,7 @@
 											"response": []
 										},
 										{
-											"name": "POST an item to OrderedItems 201 status code",
+											"name": "OrderedItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -1926,7 +1926,7 @@
 											"response": []
 										},
 										{
-											"name": "DELETE an item from OrderedItems 204 status code",
+											"name": "OrderedItems_DeleteItem_Returns204",
 											"event": [
 												{
 													"listen": "test",
@@ -1959,7 +1959,7 @@
 									]
 								},
 								{
-									"name": "GET Orders item by OrderID assert initial TotalPrice equal 0",
+									"name": "Orders_GetItem_TotalPriceEquals0",
 									"event": [
 										{
 											"listen": "test",
@@ -1995,7 +1995,7 @@
 					]
 				},
 				{
-					"name": "POST Menu item with not enough data 422 status code and received correct JSON response",
+					"name": "Menu_AddItemWithNotEnoughData_Returns422WithBody",
 					"event": [
 						{
 							"listen": "test",
@@ -2043,7 +2043,7 @@
 					"response": []
 				},
 				{
-					"name": "POST Orders item with long text as a comment 201 status code",
+					"name": "Orders_AddItemWithLongComment_Returns201",
 					"event": [
 						{
 							"listen": "test",
@@ -2088,7 +2088,7 @@
 					"response": []
 				},
 				{
-					"name": "POST Menu item using None as values 422 code status and received correct JSON response",
+					"name": "Menu_AddItemWithNoneValue_Returns422WithBody",
 					"event": [
 						{
 							"listen": "test",
