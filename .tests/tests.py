@@ -282,6 +282,9 @@ def test_orders_wrong_id_get_endpoint():
     assert type(resp_body['detail']) == str
 
 
+# DIFFERENT SCENARIO TESTS
+
+
 # GENERAL TEST TO CALCULATE IF TOTAL PRICE IS CORRECT
 
 def test_order_to_check_total_price():
@@ -354,9 +357,6 @@ def test_order_to_check_total_price():
 
     # Finally delete order
     requests.delete(url + "/orders/" + str(OrderID))
-
-
-# DIFFERENT SCENARIO TESTS
 
 
 def test_post_not_enough_data_in_menu():
