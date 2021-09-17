@@ -23,9 +23,9 @@ create table orderedItems (
 	"Quantity" int NOT NULL,
 	"UnitPrice" numeric(6, 2) NOT NULL,
 	foreign key ("MenuID")
-		references Menu ("MenuID"),
+		references Menu ("MenuID") on delete cascade,
 	foreign key ("OrderID")
-		references Orders ("OrderID")
+		references Orders ("OrderID") on delete cascade
 );
 
 INSERT INTO public."menu" ("Name", "Category", "Price") VALUES ('Margheritta', 'Pizza', 20);
