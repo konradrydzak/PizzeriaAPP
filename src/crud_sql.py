@@ -88,10 +88,11 @@ def edit_item_in_menu(db: Session, menu_id: int, item: schemas.EditItem):
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
     update_string = schema_processor_for_patching(item)
-    query = f"""UPDATE menu SET {update_string} WHERE "MenuID" = {menu_id} RETURNING * """
-    data = db.execute(query)
-    db.commit()
-    results = [{**i} for i in data]
+    if update_string != "":
+        query = f"""UPDATE menu SET {update_string} WHERE "MenuID" = {menu_id} RETURNING * """
+        data = db.execute(query)
+        db.commit()
+        results = [{**i} for i in data]
     if not results:
         return None
     return results[0]
@@ -148,7 +149,10 @@ def add_order(db: Session, order: schemas.AddOrder):
         if not EMAIL_REGEX.match(order.Email):
             raise HTTPException(status_code=400, detail="Email is invalid")
     headers, values = schema_processor_for_inserting(order)
-    query = f"""INSERT INTO orders ({headers}, "TotalPrice") VALUES ({values}, '0') RETURNING * """
+    if headers != '""':  # check if starting order is empty
+        query = f"""INSERT INTO orders ({headers}, "TotalPrice") VALUES ({values}, '0') RETURNING * """
+    else:
+        query = f"""INSERT INTO orders ("TotalPrice") VALUES ('0') RETURNING * """
     data = db.execute(query)
     db.commit()
     results = [{**i} for i in data]
@@ -189,10 +193,11 @@ def edit_order_in_orders(db: Session, order_id: int, order: schemas.EditOrder):
         if not EMAIL_REGEX.match(order.Email):
             raise HTTPException(status_code=400, detail="Email is invalid")
     update_string = schema_processor_for_patching(order)
-    query = f"""UPDATE orders SET {update_string} WHERE "OrderID" = {order_id} RETURNING * """
-    data = db.execute(query)
-    db.commit()
-    results = [{**i} for i in data]
+    if update_string != "":
+        query = f"""UPDATE orders SET {update_string} WHERE "OrderID" = {order_id} RETURNING * """
+        data = db.execute(query)
+        db.commit()
+        results = [{**i} for i in data]
     if not results:
         return None
     return results[0]
@@ -285,33 +290,34 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
         raise HTTPException(status_code=404, detail="Item not found")
     if ordereditem.MenuID is not None:
         query = f"""SELECT * FROM menu WHERE "MenuID" = {ordereditem.MenuID} """
-        data = db.execute(query)
-        results = [{**i} for i in data]
-        if not results:
+        data_to_check = db.execute(query)
+        results_to_check = [{**i} for i in data_to_check]
+        if not results_to_check:
             raise HTTPException(status_code=404, detail="Item not found")
     if ordereditem.OrderID is not None:
         query = f"""SELECT * FROM orders WHERE "OrderID" = {ordereditem.OrderID} """
-        data = db.execute(query)
-        results = [{**i} for i in data]
-        if not results:
+        data_to_check = db.execute(query)
+        results_to_check = [{**i} for i in data_to_check]
+        if not results_to_check:
             raise HTTPException(status_code=404, detail="Item not found")
 
     update_string = schema_processor_for_patching(ordereditem)
-    query = f"""UPDATE ordereditems SET {update_string} WHERE "OrderedItemID" = {ordered_item_id} RETURNING * """
-    data = db.execute(query)
-    db.commit()
-
-    # If price was not set manually, prepare UnitPrice value from Menu
-    if ordereditem.UnitPrice is None:
-        query = f"""SELECT "Price" FROM menu WHERE "MenuID" = {ordereditem.MenuID}"""
-        data_for_ordereditem = db.execute(query)
-        results_for_ordereditem = [{**i} for i in data_for_ordereditem]
-        Price = results_for_ordereditem[0]['Price']
-
-        query = f"""UPDATE ordereditems SET "UnitPrice" = '{Price}' WHERE "OrderedItemID" = {ordered_item_id} RETURNING *"""
+    if update_string != "":
+        query = f"""UPDATE ordereditems SET {update_string} WHERE "OrderedItemID" = {ordered_item_id} RETURNING * """
         data = db.execute(query)
         db.commit()
-    results = [{**i} for i in data]
+
+        # If price was not set manually, prepare UnitPrice value from Menu
+        if ordereditem.UnitPrice is None:
+            query = f"""SELECT "Price" FROM menu WHERE "MenuID" = {ordereditem.MenuID}"""
+            data_for_ordereditem = db.execute(query)
+            results_for_ordereditem = [{**i} for i in data_for_ordereditem]
+            Price = results_for_ordereditem[0]['Price']
+
+            query = f"""UPDATE ordereditems SET "UnitPrice" = '{Price}' WHERE "OrderedItemID" = {ordered_item_id} RETURNING *"""
+            data = db.execute(query)
+            db.commit()
+        results = [{**i} for i in data]
     recalculate_totalprice_value(db, results[0]['OrderID'])
     if not results:
         return None
