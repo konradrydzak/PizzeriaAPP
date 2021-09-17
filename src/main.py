@@ -5,8 +5,15 @@ from fastapi import Depends, FastAPI, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from src import models
-from src import schemas, crud
+from src import schemas, crud_sql, crud_orm
 from src.database import SessionLocal, engine
+
+# SET ORM/SQL MODE TO USE
+USE_ORM = False
+if USE_ORM:
+    crud = crud_orm
+else:
+    crud = crud_sql  # Note: this mode does not use models.py file
 
 models.Base.metadata.create_all(bind=engine)
 
