@@ -1,0 +1,2179 @@
+{
+	"info": {
+		"_postman_id": "3e61b566-3ac7-4522-8c38-da2a61c0ae83",
+		"name": "PizzeriaAPPTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Menu Tests",
+			"item": [
+				{
+					"name": "Menu_AddItem_Returns201WithBody",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+									"pm.test(\"Test POST Menu item\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/menu",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_GetAllItems_Returns200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test GET Menu\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/menu",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_GetItemByMenuID_Returns201WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET Menu item by MenuID\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/menu/{{MenuID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu",
+								"{{MenuID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_EditItem_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test PATCH Menu item\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Changed\",\r\n    \"Price\": 50,\r\n    \"Category\": \"New category\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/menu/{{MenuID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu",
+								"{{MenuID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_DeleteItem_Returns204",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test DELETE Menu item\", function () {\r",
+									"    pm.response.to.have.status(204)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/menu/{{MenuID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu",
+								"{{MenuID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_GetItemWithWrongID_Returns404WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET Menu item with wrong MenuID\", function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/menu/0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders Tests",
+			"item": [
+				{
+					"name": "Additional preparation for later tests",
+					"item": [
+						{
+							"name": "Menu_AddItem_Returns201",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+											"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+											"    pm.response.to.have.status(201)\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/menu",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"menu"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Orders_AddItem_Returns201WithBody",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+									"pm.test(\"Test POST Orders item\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": {{MenuID}},\r\n            \"Quantity\": 1\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/orders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_GetAllItems_Returns200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test GET Orders\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_GetItemByOrderID_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders/{{OrderID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_EditItem_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test PATCH Orders item\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Comments\": \"Test comment changed\",\r\n    \"Email\": \"test@changed.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/orders/{{OrderID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_DeleteItem_Returns204",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test DELETE Orders item\", function () {\r",
+									"    pm.response.to.have.status(204)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders/{{OrderID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_GetItemWithWrongID_Returns404WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET Order items with wrong OrderID\", function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders/0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderedItems Tests",
+			"item": [
+				{
+					"name": "Additional preparation for later tests",
+					"item": [
+						{
+							"name": "Menu_AddItem_Returns201",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+											"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+											"    pm.response.to.have.status(201)\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/menu",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"menu"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Orders_AddItem_Returns201",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+											"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+											"    pm.response.to.have.status(201)\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "OrderedItems_AddItem_Returns201WithBody",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
+									"pm.test(\"Test POST OrderedItems item\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 5\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/ordereditems",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_GetAllItems_Returns200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test GET OrderedItems\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_GetItemByOrderedItemID_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET OrderedItems by OrderedItemID\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"{{OrderedItemID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_GetItemByOrderID_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET OrderedItems by OrderID\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData[0].Quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].OrderedItemID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].UnitPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].OrderID).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems/orderid/{{OrderID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"orderid",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_GetItemByMenuID_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET OrderedItems by MenuID\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData[0].Quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].OrderedItemID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].UnitPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].OrderID).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems/menuid/{{MenuID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"menuid",
+								"{{MenuID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_EditItem_Returns200WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test PATCH OrderedItems item\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"    pm.response.to.have.header(\"Content-Type\")\r",
+									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
+									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MenuID\": 18,\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 4,\r\n    \"UnitPrice\": 7\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"{{OrderedItemID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_DeleteItem_Returns204",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test DELETE OrderedItems item\", function () {\r",
+									"    pm.response.to.have.status(204)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"{{OrderedItemID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderedItems_GetItemWithWrongID_Returns404WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test GET OrderedItems item with wrong OrderedItemID\", function () {\r",
+									"    pm.response.to.have.status(404)\r",
+									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ordereditems/0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ordereditems",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Other Tests (more advanced)",
+			"item": [
+				{
+					"name": "TotalPrice correct calculation tests Copy",
+					"item": [
+						{
+							"name": "TotalPrice test for value to be equal 0 after initial empty Order creation",
+							"item": [
+								{
+									"name": "Additional preparation for later tests",
+									"item": [
+										{
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+															"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/orders",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Orders_GetItem_TotalPriceEquals0",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+													"    pm.expect(jsonData.TotalPrice).to.be.equal(0)\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/orders/{{OrderID}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"orders",
+												"{{OrderID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "TotalPrice test after initial non-empty Order creation",
+							"item": [
+								{
+									"name": "Additional preparation for later tests",
+									"item": [
+										{
+											"name": "Menu_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/menu",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"menu"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Orders_AddItemWithInitialOrderedItems_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+															"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": {{MenuID}},\r\n            \"Quantity\": 2\r\n        }\r\n    ]\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/orders",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Orders_GetItem_TotalPriceEquals46",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+													"    pm.expect(jsonData.TotalPrice).to.be.equal(46)\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/orders/{{OrderID}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"orders",
+												"{{OrderID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "TotalPrice test after adding items to Order",
+							"item": [
+								{
+									"name": "Additional preparation for later tests",
+									"item": [
+										{
+											"name": "Menu_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/menu",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"menu"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/orders",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "OrderedItems_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
+															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/ordereditems",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"ordereditems"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Orders_GetItem_TotalPriceEquals46",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+													"    pm.expect(jsonData.TotalPrice).to.be.equal(46)\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/orders/{{OrderID}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"orders",
+												"{{OrderID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "TotalPrice test after editing item UnitPrice",
+							"item": [
+								{
+									"name": "Additional preparation for later tests",
+									"item": [
+										{
+											"name": "Menu_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/menu",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"menu"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/orders",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "OrderedItems_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
+															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/ordereditems",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"ordereditems"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "OrderedItems_EditItem_Returns200",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.test(\"Additional test PATCH OrderedItems item 200 status code\", function () {\r",
+															"    pm.response.to.have.status(200)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 5,\r\n    \"UnitPrice\": 20\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"ordereditems",
+														"{{OrderedItemID}}"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Orders_GetItem_TotalPriceEquals100",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+													"    pm.expect(jsonData.TotalPrice).to.be.equal(100)\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/orders/{{OrderID}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"orders",
+												"{{OrderID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "TotalPrice test for value to be equal 0 after deleting all items from Order",
+							"item": [
+								{
+									"name": "Additional preparation for later tests",
+									"item": [
+										{
+											"name": "Menu_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
+															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/menu",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"menu"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Orders_AddItemWithNoInitialOrderedItems_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
+															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/orders",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "OrderedItems_AddItem_Returns201",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"const jsonData = pm.response.json();\r",
+															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
+															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"    pm.response.to.have.status(201)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+												},
+												"url": {
+													"raw": "{{url}}/ordereditems",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"ordereditems"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "OrderedItems_DeleteItem_Returns204",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Additional test DELETE OrderedItems item 204 status code\", function () {\r",
+															"    pm.response.to.have.status(204)\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"ordereditems",
+														"{{OrderedItemID}}"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Orders_GetItem_TotalPriceEquals0",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+													"    pm.expect(jsonData.TotalPrice).to.be.equal(0)\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/orders/{{OrderID}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"orders",
+												"{{OrderID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Menu_AddItemWithNotEnoughData_Returns422WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test POST Menu item with not enough data\", function () {\r",
+									"    pm.response.to.have.status(422)\r",
+									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Not enough data\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/menu",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders_AddItemWithLongComment_Returns201",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test POST Orders item with long text as a comment\", function () {\r",
+									"    pm.response.to.have.status(201)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Comments\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at elit risus. Nulla et consectetur felis. Cras quis ultricies lacus. Fusce vulputate est risus, nec gravida enim sagittis vel. Duis ligula magna, finibus nec est sed, cursus sodales purus. In ut diam eget dui sollicitudin semper. Morbi sodales mi sed est tempor condimentum. Vivamus a porttitor ipsum. Ut ut iaculis augue. Quisque lacinia est ornare justo mollis feugiat. Sed hendrerit porta metus et tempor.\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/orders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu_AddItemWithNoneValue_Returns422WithBody",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Test POST Menu item using None as values\", function () {\r",
+									"    pm.response.to.have.status(422)\r",
+									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": None,\r\n    \"Price\": None,\r\n    \"Category\": None\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/menu",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		},
+		{
+			"key": "MenuID",
+			"value": ""
+		},
+		{
+			"key": "OrderID",
+			"value": ""
+		},
+		{
+			"key": "OrderedItemID",
+			"value": ""
+		}
+	]
+}

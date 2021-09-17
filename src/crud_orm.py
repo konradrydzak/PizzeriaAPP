@@ -85,6 +85,10 @@ def add_order(db: Session, order: schemas.AddOrder):
     # Add initial ordered items in OrderedItems
     if order.OrderedItems is not None:
         for ordereditem in order.OrderedItems:
+            db_ordereditem_to_check = db.query(models.Menu).get(ordereditem.MenuID)
+            if db_ordereditem_to_check is None:
+                raise HTTPException(status_code=404, detail="Item not found")
+
             db_ordereditem = models.OrderedItems(OrderID=db_order.OrderID, MenuID=ordereditem.MenuID,
                                                  Quantity=ordereditem.Quantity,
                                                  UnitPrice=db.query(models.Menu).filter(
@@ -140,6 +144,13 @@ def get_ordereditems_by_menu_id(db: Session, menu_id: int):
 
 
 def add_ordereditem_to_ordereditems(db: Session, ordereditem: schemas.AddOrderedItem):
+    db_ordereditem_to_check = db.query(models.Menu).get(ordereditem.MenuID)
+    if db_ordereditem_to_check is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    db_ordereditem_to_check = db.query(models.Orders).get(ordereditem.OrderID)
+    if db_ordereditem_to_check is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+
     db_ordereditem = models.OrderedItems(**ordereditem.dict(),
                                          UnitPrice=db.query(models.Menu).filter(
                                              models.Menu.MenuID == ordereditem.MenuID).first().Price)
@@ -155,6 +166,15 @@ def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: sch
     db_ordereditem = db.query(models.OrderedItems).get(ordered_item_id)
     if db_ordereditem is None:
         raise HTTPException(status_code=404, detail="Item not found")
+
+    if ordereditem.MenuID is not None:
+        db_ordereditem_to_check = db.query(models.Menu).get(ordereditem.MenuID)
+        if db_ordereditem_to_check is None:
+            raise HTTPException(status_code=404, detail="Item not found")
+    if ordereditem.OrderID is not None:
+        db_ordereditem_to_check = db.query(models.Orders).get(ordereditem.OrderID)
+        if db_ordereditem_to_check is None:
+            raise HTTPException(status_code=404, detail="Item not found")
 
     for var, value in vars(ordereditem).items():
         setattr(db_ordereditem, var, value) if value is not None else None  # Sets an attribute if it's provided
