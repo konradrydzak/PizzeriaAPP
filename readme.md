@@ -3,6 +3,9 @@ Project for self learning purposes - featuring: API (FastAPI), containers (Docke
 
 Simulates a working pizza place.
 
+You can preview the app at: http://srv08.mikr.us:20263/docs
+
+
 ## Requirements
 
 - Filled Menu with many positions, names, prices and categories
