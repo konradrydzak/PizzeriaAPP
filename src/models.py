@@ -4,36 +4,36 @@ from sqlalchemy.orm import relationship
 from src.database import Base
 
 
-class Menu(Base):
-    __tablename__ = "menu"
+class MenuItems(Base):
+    __tablename__ = "menu_items"
 
-    MenuID = Column(Integer, primary_key=True, index=True)
-    Category = Column(String)
-    Name = Column(String)
-    Price = Column(Float)
+    menu_id = Column(Integer, primary_key=True, index=True)
+    category = Column(String)
+    name = Column(String)
+    price = Column(Float)
 
-    ordereditems = relationship("OrderedItems", back_populates="menu", cascade="all, delete")
+    ordered_items = relationship("OrderedItems", back_populates="menu_items", cascade="all, delete")
 
 
 class Orders(Base):
     __tablename__ = "orders"
 
-    OrderID = Column(Integer, primary_key=True, index=True)
-    TotalPrice = Column(Float)
-    Comments = Column(String)
-    Email = Column(String)
+    order_id = Column(Integer, primary_key=True, index=True)
+    total_price = Column(Float)
+    comments = Column(String)
+    email = Column(String)
 
-    ordereditems = relationship("OrderedItems", back_populates="orders", cascade="all, delete")
+    ordered_items = relationship("OrderedItems", back_populates="orders", cascade="all, delete")
 
 
 class OrderedItems(Base):
-    __tablename__ = "ordereditems"
+    __tablename__ = "ordered_items"
 
-    OrderedItemID = Column(Integer, primary_key=True, index=True)
-    MenuID = Column(Integer, ForeignKey("menu.MenuID"))
-    OrderID = Column(Integer, ForeignKey("orders.OrderID"))
-    Quantity = Column(Integer)
-    UnitPrice = Column(Float)
+    ordered_item_id = Column(Integer, primary_key=True, index=True)
+    menu_id = Column(Integer, ForeignKey("menu_items.menu_id"))
+    order_id = Column(Integer, ForeignKey("orders.order_id"))
+    quantity = Column(Integer)
+    unit_price = Column(Float)
 
-    menu = relationship("Menu", back_populates="ordereditems")
-    orders = relationship("Orders", back_populates="ordereditems")
+    menu_items = relationship("MenuItems", back_populates="ordered_items")
+    orders = relationship("Orders", back_populates="ordered_items")
