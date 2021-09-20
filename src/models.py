@@ -7,7 +7,7 @@ from src.database import Base
 class MenuItems(Base):
     __tablename__ = "menu_items"
 
-    menu_id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     category = Column(String)
     name = Column(String)
     price = Column(Float)
@@ -18,7 +18,7 @@ class MenuItems(Base):
 class Orders(Base):
     __tablename__ = "orders"
 
-    order_id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     total_price = Column(Float)
     comments = Column(String)
     email = Column(String)
@@ -29,9 +29,9 @@ class Orders(Base):
 class OrderedItems(Base):
     __tablename__ = "ordered_items"
 
-    ordered_item_id = Column(Integer, primary_key=True, index=True)
-    menu_id = Column(Integer, ForeignKey("menu_items.menu_id"))
-    order_id = Column(Integer, ForeignKey("orders.order_id"))
+    id = Column(Integer, primary_key=True, index=True)
+    menu_item_id = Column(Integer, ForeignKey("menu_items.id"))
+    order_id = Column(Integer, ForeignKey("orders.id"))
     quantity = Column(Integer)
     unit_price = Column(Float)
 

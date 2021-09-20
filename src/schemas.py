@@ -2,6 +2,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
+
 # MENU
 
 
@@ -41,7 +42,7 @@ class EditItem(BaseModel):
 
 
 class BaseOrderedItem(BaseModel):
-    menu_id: int
+    menu_item_id: int
     quantity: int = Field(..., gt=0, description="The quantity must be greater than zero")
 
     class Config:
@@ -52,7 +53,7 @@ class AddInitialOrderedItem(BaseOrderedItem):
     class Config:
         schema_extra = {
             "example": {
-                "menu_id": 17,
+                "menu_item_id": 17,
                 "quantity": 3,
             }
         }
@@ -64,7 +65,7 @@ class AddOrderedItem(BaseOrderedItem):
     class Config:
         schema_extra = {
             "example": {
-                "menu_id": 17,
+                "menu_item_id": 17,
                 "order_id": 2,
                 "quantity": 3,
             }
@@ -72,7 +73,7 @@ class AddOrderedItem(BaseOrderedItem):
 
 
 class EditOrderedItem(BaseOrderedItem):
-    menu_id: Optional[int] = None
+    menu_item_id: Optional[int] = None
     order_id: Optional[int] = None
     quantity: int = Field(None, gt=0, description="The quantity must be greater than zero")
     unit_price: int = Field(None, gt=0, description="The unit price must be greater than zero")
@@ -80,7 +81,7 @@ class EditOrderedItem(BaseOrderedItem):
     class Config:
         schema_extra = {
             "example": {
-                "menu_id": 17,
+                "menu_item_id": 17,
                 "order_id": 2,
                 "quantity": 3,
                 "unit_price": 7,
@@ -109,11 +110,11 @@ class AddOrder(BaseOrder):
                 "email": "adress@email.com",
                 "ordered_items": [
                     {
-                        "menu_id": 1,
+                        "menu_item_id": 1,
                         "quantity": 1,
                     },
                     {
-                        "menu_id": 18,
+                        "menu_item_id": 18,
                         "quantity": 2,
                     },
                 ]
