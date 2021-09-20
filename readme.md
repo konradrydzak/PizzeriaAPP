@@ -8,7 +8,7 @@ You can preview the app at: http://srv08.mikr.us:20263/docs
 
 ## Requirements
 
-- Filled Menu with many positions, names, prices and categories
+- Filled menu with many positions, names, prices and categories
 - Should allow to pick any combination of menu positions
 - Should let users pick each position many times
 - Total price of a single order should be updated live
@@ -25,5 +25,6 @@ You can preview the app at: http://srv08.mikr.us:20263/docs
 - prepared end2end RestAPI tests collection in Postman (and an additional simpler version to use with pytest)
 
 ### Possible improvements
-- Prepare a better database that add a relation between main dishes and addons (now theoretically you can pick just an addon from the menu)
+- prepare a better database that adds a relation between main dishes and addons (now theoretically you can pick just an addon from the menu)
 - provide a way to store history of orders and ordereditems (even for items that are deleted such as menu positions)
+- implement authorization to restrict database access (for example restrict menu_items table only to admin)
