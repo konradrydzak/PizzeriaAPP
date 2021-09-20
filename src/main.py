@@ -163,8 +163,8 @@ def read_ordered_items_by_order_id(order_id: int, db: Session = Depends(get_db))
     return ordereditems
 
 
-# GET ordered items from ordered_items by menu_id
-@app.get("/ordereditems/menuid/{menu_item_id}", tags=['ordered_items'])
+# GET ordered items from ordered_items by menu_item_id
+@app.get("/ordereditems/menuitemid/{menu_item_id}", tags=['ordered_items'])
 def read_ordered_items_by_menu_item_id(menu_item_id: int, db: Session = Depends(get_db)):
     ordereditems = crud.get_ordered_items_by_menu_item_id(db=db, menu_item_id=menu_item_id)
     if ordereditems is None:
