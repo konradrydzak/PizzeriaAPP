@@ -1,353 +1,295 @@
 import re
 
+import psycopg2
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 
+from src import config
 from src import schemas
 
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
 
+def query_to_database_processor(query):
+    try:
+        params = config.config()
+        params.popitem()  # database_url parameter is not used in psycopg2
+        conn = psycopg2.connect(**params)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        column_names = [value[0] for value in cur.description]
+        results = [dict(zip(column_names, row)) for row in data]
+        if not results:
+            return None
+        return results
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+
+
 def schema_processor_for_inserting(schema):
-    # schema example structure: [("Name", "Pepperoni"), ("Price", "23.0")]
+    # schema example structure: [("name", "Pepperoni"), ("price", "23.0")]
     headers, values = [], []
-    for value in schema:
-        if value[1] is None or value[0] == "OrderedItems":
+    for header, value in schema:
+        if value is None or header == "ordered_items":
             continue
-        headers.append(value[0])
-        values.append(value[1])
-    headers_string = '"' + '", "'.join(map(str, headers)) + '"'  # headers needs to be in format: "Name", "Price"
+        headers.append(header)
+        values.append(value)
+    headers_string = '"' + '", "'.join(map(str, headers)) + '"'  # headers needs to be in format: "name", "price"
     values_string = "'" + "', '".join(map(str, values)) + "'"  # values needs to be in format: 'Pepperoni', '23.0'
     return headers_string, values_string
 
 
 def schema_processor_for_patching(schema):
     update_string = ""
-    for value in schema:
-        if value[1] is None:
+    for header, value in schema:
+        if value is None:
             continue
-        update_string = update_string + f""""{str(value[0])}" = '{str(value[1])}', """
-    update_string = update_string[:-2]  # update_string needs to be in format: "Name" = 'Veggi', "Price" = '21.0'
+        update_string = update_string + f""""{str(header)}" = '{str(value)}', """
+    update_string = update_string[:-2]  # update_string needs to be in format: "name" = 'Veggi', "price" = '21.0'
     return update_string
 
 
 # MENU
 
 
-def get_all_menu(db: Session):
-    query = "SELECT * FROM menu"
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+def get_all_menu_items(db):
+    query = "SELECT * FROM menu_items"
+    return query_to_database_processor(query)
 
 
-def get_menu_items_by_name(db: Session, name: str):
-    query = f"""SELECT * FROM menu WHERE "Name" ILIKE '%{name}%'"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+def get_menu_items_by_name(name: str, db):
+    query = f"""SELECT * FROM menu_items WHERE "name" ILIKE '%{name}%'"""
+    return query_to_database_processor(query)
 
 
-def get_menu_items_by_category(db: Session, category: str):
-    query = f"""SELECT * FROM menu WHERE "Category" ILIKE '%{category}%'"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+def get_menu_items_by_category(category: str, db):
+    query = f"""SELECT * FROM menu_items WHERE "category" ILIKE '%{category}%'"""
+    return query_to_database_processor(query)
 
 
-def get_menu_item_by_id(db: Session, menu_id: int):
-    query = f"""SELECT * FROM menu WHERE "MenuID" = {menu_id}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results[0]
+def get_menu_item_by_id(menu_id: int, db):
+    query = f"""SELECT * FROM menu_items WHERE "menu_id" = {menu_id}"""
+    results = query_to_database_processor(query)
+    if results is None:
+        return results
+    else:
+        return results[0]
 
 
-def add_item_to_menu(db: Session, item: schemas.AddItem):
+def add_to_menu_items(item: schemas.AddItem, db):
     headers, values = schema_processor_for_inserting(item)
-    query = f"""INSERT INTO menu ({headers}) VALUES ({values}) RETURNING * """
-    data = db.execute(query)
-    db.commit()
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results[0]
+    query = f"""INSERT INTO menu_items ({headers}) VALUES ({values}) RETURNING * """
+    return query_to_database_processor(query)[0]
 
 
-def edit_item_in_menu(db: Session, menu_id: int, item: schemas.EditItem):
-    query = f"""SELECT * FROM menu WHERE "MenuID" = {menu_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def edit_item_in_menu_items(menu_id: int, item: schemas.EditItem, db):
+    query = f"""SELECT * FROM menu_items WHERE "menu_id" = {menu_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
     update_string = schema_processor_for_patching(item)
     if update_string != "":
-        query = f"""UPDATE menu SET {update_string} WHERE "MenuID" = {menu_id} RETURNING * """
-        data = db.execute(query)
-        db.commit()
-        results = [{**i} for i in data]
-    if not results:
-        return None
+        query = f"""UPDATE menu_items SET {update_string} WHERE "menu_id" = {menu_id} RETURNING * """
+        results = query_to_database_processor(query)
     return results[0]
 
 
-def del_item_from_menu(db: Session, menu_id: int):
-    query = f"""SELECT * FROM menu WHERE "MenuID" = {menu_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def del_item_from_menu_items(menu_id: int, db):
+    query = f"""SELECT * FROM menu_items WHERE "menu_id" = {menu_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
-    query = f"""SELECT "OrderID" FROM OrderedItems WHERE "MenuID" = {menu_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    query = f"""DELETE FROM menu WHERE "MenuID" = {menu_id}"""
-    db.execute(query)
-    db.commit()
-    for row in results:
-        recalculate_totalprice_value(db, row['OrderID'])
+    query = f"""SELECT "order_id" FROM ordered_items WHERE "menu_id" = {menu_id} """
+    results = query_to_database_processor(query)
+    query = f"""DELETE FROM menu_items WHERE "menu_id" = {menu_id}"""
+    query_to_database_processor(query)
+
+    if results is not None:
+        for row in results:
+            recalculate_total_price_value(row['order_id'], db)
 
 
 # ORDERS
 
 
-def get_all_orders(db: Session):
+def get_all_orders(db):
     query = "SELECT * FROM orders"
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+    return query_to_database_processor(query)
 
 
-def get_orders_by_email(db: Session, email: str):
-    query = f"""SELECT * FROM orders WHERE "Email" ILIKE '%{email}%'"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+def get_orders_by_email(email: str, db):
+    query = f"""SELECT * FROM orders WHERE "email" ILIKE '%{email}%'"""
+    return query_to_database_processor(query)
 
 
-def get_order_by_id(db: Session, order_id: int):
-    query = f"""SELECT * FROM orders WHERE "OrderID" = {order_id}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results[0]
+def get_order_by_id(order_id: int, db):
+    query = f"""SELECT * FROM orders WHERE "order_id" = {order_id}"""
+    results = query_to_database_processor(query)
+    if results is None:
+        return results
+    else:
+        return results[0]
 
 
-def add_order(db: Session, order: schemas.AddOrder):
-    if order.Email is not None:
-        if not EMAIL_REGEX.match(order.Email):
-            raise HTTPException(status_code=400, detail="Email is invalid")
+def add_to_orders(order: schemas.AddOrder, db):
+    if order.email is not None:
+        if not EMAIL_REGEX.match(order.email):
+            raise HTTPException(status_code=400, detail="email is invalid")
     headers, values = schema_processor_for_inserting(order)
     if headers != '""':  # check if starting order is empty
-        query = f"""INSERT INTO orders ({headers}, "TotalPrice") VALUES ({values}, '0') RETURNING * """
+        query = f"""INSERT INTO orders ({headers}, "total_price") VALUES ({values}, '0') RETURNING * """
     else:
-        query = f"""INSERT INTO orders ("TotalPrice") VALUES ('0') RETURNING * """
-    data = db.execute(query)
-    db.commit()
-    results = [{**i} for i in data]
-    if order.OrderedItems is not None:
-        order_id = results[0]['OrderID']
-        for ordereditem in order.OrderedItems:
-            query = f"""SELECT * FROM menu WHERE "MenuID" = {ordereditem.MenuID} """
-            data = db.execute(query)
-            results = [{**i} for i in data]
+        query = f"""INSERT INTO orders ("total_price") VALUES ('0') RETURNING * """
+    results = query_to_database_processor(query)
+    if order.ordered_items is not None:
+        order_id = results[0]['order_id']
+        for ordered_item in order.ordered_items:
+            query = f"""SELECT * FROM menu_items WHERE "menu_id" = {ordered_item.menu_id} """
+            results = query_to_database_processor(query)
             if not results:
                 raise HTTPException(status_code=404, detail="Item not found")
 
-            query = f"""SELECT "Price" FROM menu WHERE "MenuID" = {ordereditem.MenuID}"""
-            data_for_ordereditem = db.execute(query)
-            results_for_ordereditem = [{**i} for i in data_for_ordereditem]
-            Price = results_for_ordereditem[0]['Price']
+            query = f"""SELECT "price" FROM menu_items WHERE "menu_id" = {ordered_item.menu_id}"""
+            results_for_ordereditem = query_to_database_processor(query)
+            price = results_for_ordereditem[0]['price']
 
-            headers, values = schema_processor_for_inserting(ordereditem)
-            query = f"""INSERT INTO ordereditems ("OrderID", {headers}, "UnitPrice") VALUES ('{order_id}', {values}, '{Price}')"""
-            db.execute(query)
-            db.commit()
-        recalculate_totalprice_value(db, order_id)
-        query = f"""SELECT * FROM orders WHERE "OrderID" = {order_id}"""
-        data = db.execute(query)
-        results = [{**i} for i in data]
-    if not results:
-        return None
+            headers, values = schema_processor_for_inserting(ordered_item)
+            query = f"""INSERT INTO ordered_items ("order_id", {headers}, "unit_price") VALUES ('{order_id}', {values}, '{price}')"""
+            query_to_database_processor(query)
+        recalculate_total_price_value(order_id, db)
+        query = f"""SELECT * FROM orders WHERE "order_id" = {order_id}"""
+        results = query_to_database_processor(query)
     return results[0]
 
 
-def edit_order_in_orders(db: Session, order_id: int, order: schemas.EditOrder):
-    query = f"""SELECT * FROM orders WHERE "OrderID" = {order_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def edit_item_in_orders(order_id: int, order: schemas.EditOrder, db):
+    query = f"""SELECT * FROM orders WHERE "order_id" = {order_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
-    if order.Email is not None:
-        if not EMAIL_REGEX.match(order.Email):
-            raise HTTPException(status_code=400, detail="Email is invalid")
+    if order.email is not None:
+        if not EMAIL_REGEX.match(order.email):
+            raise HTTPException(status_code=400, detail="email is invalid")
     update_string = schema_processor_for_patching(order)
     if update_string != "":
-        query = f"""UPDATE orders SET {update_string} WHERE "OrderID" = {order_id} RETURNING * """
-        data = db.execute(query)
-        db.commit()
-        results = [{**i} for i in data]
-    if not results:
-        return None
+        query = f"""UPDATE orders SET {update_string} WHERE "order_id" = {order_id} RETURNING * """
+        results = query_to_database_processor(query)
     return results[0]
 
 
-def del_order_from_orders(db: Session, order_id: int):
-    query = f"""SELECT * FROM orders WHERE "OrderID" = {order_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def del_item_from_orders(order_id: int, db):
+    query = f"""SELECT * FROM orders WHERE "order_id" = {order_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
-    query = f"""DELETE FROM orders WHERE "OrderID" = {order_id} """
-    db.execute(query)
-    db.commit()
+    query = f"""DELETE FROM orders WHERE "order_id" = {order_id} """
+    query_to_database_processor(query)
 
 
 # ORDEREDITEMS
 
 
-def get_all_ordereditems(db: Session):
-    query = "SELECT * FROM ordereditems"
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
+def get_all_ordered_items(db):
+    query = "SELECT * FROM ordered_items"
+    return query_to_database_processor(query)
 
 
-def get_ordereditem_by_ordered_item_id(db: Session, ordered_item_id: int):
-    query = f"""SELECT * FROM ordereditems WHERE "OrderedItemID" = {ordered_item_id}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def get_ordered_item_by_ordered_item_id(ordered_item_id: int, db):
+    query = f"""SELECT * FROM ordered_items WHERE "ordered_item_id" = {ordered_item_id}"""
+    results = query_to_database_processor(query)
+    if results is None:
+        return results
+    else:
+        return results[0]
+
+
+def get_ordered_items_by_order_id(order_id: int, db):
+    query = f"""SELECT * FROM ordered_items WHERE "order_id" = {order_id}"""
+    return query_to_database_processor(query)
+
+
+def get_ordered_items_by_menu_id(menu_id: int, db):
+    query = f"""SELECT * FROM ordered_items WHERE "menu_id" = {menu_id}"""
+    return query_to_database_processor(query)
+
+
+def add_to_ordered_items(ordered_item: schemas.AddOrderedItem, db):
+    query = f"""SELECT * FROM menu_items WHERE "menu_id" = {ordered_item.menu_id} """
+    results = query_to_database_processor(query)
     if not results:
-        return None
+        raise HTTPException(status_code=404, detail="Item not found")
+    query = f"""SELECT * FROM orders WHERE "order_id" = {ordered_item.order_id} """
+    results = query_to_database_processor(query)
+    if not results:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    query = f"""SELECT "price" FROM menu_items WHERE "menu_id" = {ordered_item.menu_id}"""
+    results = query_to_database_processor(query)
+    price = results[0]['price']
+
+    headers, values = schema_processor_for_inserting(ordered_item)
+    query = f"""INSERT INTO ordered_items ({headers}, "unit_price") VALUES ({values}, '{price}') RETURNING * """
+    results = query_to_database_processor(query)
+    recalculate_total_price_value(results[0]['order_id'], db)
     return results[0]
 
 
-def get_ordereditems_by_order_id(db: Session, order_id: int):
-    query = f"""SELECT * FROM ordereditems WHERE "OrderID" = {order_id}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
-
-
-def get_ordereditems_by_menu_id(db: Session, menu_id: int):
-    query = f"""SELECT * FROM ordereditems WHERE "MenuID" = {menu_id}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        return None
-    return results
-
-
-def add_ordereditem_to_ordereditems(db: Session, ordereditem: schemas.AddOrderedItem):
-    query = f"""SELECT * FROM menu WHERE "MenuID" = {ordereditem.MenuID} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def edit_item_in_ordered_items(ordered_item_id: int, ordered_item: schemas.EditOrderedItem,
+                               db):
+    query = f"""SELECT * FROM ordered_items WHERE "ordered_item_id" = {ordered_item_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
-    query = f"""SELECT * FROM orders WHERE "OrderID" = {ordereditem.OrderID} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        raise HTTPException(status_code=404, detail="Item not found")
-
-    query = f"""SELECT "Price" FROM menu WHERE "MenuID" = {ordereditem.MenuID}"""
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    Price = results[0]['Price']
-
-    headers, values = schema_processor_for_inserting(ordereditem)
-    query = f"""INSERT INTO ordereditems ({headers}, "UnitPrice") VALUES ({values}, '{Price}') RETURNING * """
-    data = db.execute(query)
-    db.commit()
-
-    results = [{**i} for i in data]
-    recalculate_totalprice_value(db, results[0]['OrderID'])
-    if not results:
-        return None
-    return results[0]
-
-
-def edit_data_in_ordereditem(db: Session, ordered_item_id: int, ordereditem: schemas.EditOrderedItem):
-    query = f"""SELECT * FROM ordereditems WHERE "OrderedItemID" = {ordered_item_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    if not results:
-        raise HTTPException(status_code=404, detail="Item not found")
-    if ordereditem.MenuID is not None:
-        query = f"""SELECT * FROM menu WHERE "MenuID" = {ordereditem.MenuID} """
-        data_to_check = db.execute(query)
-        results_to_check = [{**i} for i in data_to_check]
+    if ordered_item.menu_id is not None:
+        query = f"""SELECT * FROM menu_items WHERE "menu_id" = {ordered_item.menu_id} """
+        results_to_check = query_to_database_processor(query)
         if not results_to_check:
             raise HTTPException(status_code=404, detail="Item not found")
-    if ordereditem.OrderID is not None:
-        query = f"""SELECT * FROM orders WHERE "OrderID" = {ordereditem.OrderID} """
-        data_to_check = db.execute(query)
-        results_to_check = [{**i} for i in data_to_check]
+    if ordered_item.order_id is not None:
+        query = f"""SELECT * FROM orders WHERE "order_id" = {ordered_item.order_id} """
+        results_to_check = query_to_database_processor(query)
         if not results_to_check:
             raise HTTPException(status_code=404, detail="Item not found")
 
-    update_string = schema_processor_for_patching(ordereditem)
+    update_string = schema_processor_for_patching(ordered_item)
     if update_string != "":
-        query = f"""UPDATE ordereditems SET {update_string} WHERE "OrderedItemID" = {ordered_item_id} RETURNING * """
-        data = db.execute(query)
-        db.commit()
+        query = f"""UPDATE ordered_items SET {update_string} WHERE "ordered_item_id" = {ordered_item_id} RETURNING * """
+        results = query_to_database_processor(query)
 
-        # If price was not set manually, prepare UnitPrice value from Menu
-        if ordereditem.UnitPrice is None:
-            query = f"""SELECT "Price" FROM menu WHERE "MenuID" = {ordereditem.MenuID}"""
-            data_for_ordereditem = db.execute(query)
-            results_for_ordereditem = [{**i} for i in data_for_ordereditem]
-            Price = results_for_ordereditem[0]['Price']
+        # If price was not set manually, prepare unit_price value from Menu
+        if ordered_item.unit_price is None:
+            query = f"""SELECT "price" FROM menu_items WHERE "menu_id" = {ordered_item.menu_id}"""
+            results_for_ordereditem = query_to_database_processor(query)
+            price = results_for_ordereditem[0]['price']
 
-            query = f"""UPDATE ordereditems SET "UnitPrice" = '{Price}' WHERE "OrderedItemID" = {ordered_item_id} RETURNING *"""
-            data = db.execute(query)
-            db.commit()
-        results = [{**i} for i in data]
-    recalculate_totalprice_value(db, results[0]['OrderID'])
-    if not results:
-        return None
+            query = f"""UPDATE ordered_items SET "unit_price" = '{price}' WHERE "ordered_item_id" = {ordered_item_id} RETURNING *"""
+            results = query_to_database_processor(query)
+    recalculate_total_price_value(results[0]['order_id'], db)
     return results[0]
 
 
-def del_ordereditem_from_ordereditems(db: Session, ordered_item_id: int):
-    query = f"""SELECT * FROM ordereditems WHERE "OrderedItemID" = {ordered_item_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
+def del_item_from_ordered_items(ordered_item_id: int, db):
+    query = f"""SELECT * FROM ordered_items WHERE "ordered_item_id" = {ordered_item_id} """
+    results = query_to_database_processor(query)
     if not results:
         raise HTTPException(status_code=404, detail="Item not found")
-    query = f"""DELETE FROM ordereditems WHERE "OrderedItemID" = {ordered_item_id} """
-    db.execute(query)
-    db.commit()
-    recalculate_totalprice_value(db, results[0]['OrderID'])
+    query = f"""DELETE FROM ordered_items WHERE "ordered_item_id" = {ordered_item_id} """
+    query_to_database_processor(query)
+
+    recalculate_total_price_value(results[0]['order_id'], db)
 
 
 # "TRIGGERS"
 
-def recalculate_totalprice_value(db: Session, order_id):
-    query = f"""SELECT * FROM ordereditems WHERE "OrderID" = {order_id} """
-    data = db.execute(query)
-    results = [{**i} for i in data]
-    TotalPrice = 0
+def recalculate_total_price_value(order_id, db):
+    query = f"""SELECT * FROM ordered_items WHERE "order_id" = {order_id} """
+    results = query_to_database_processor(query)
+    total_price = 0
     if not results:
-        query = f"""UPDATE orders SET "TotalPrice" = {TotalPrice} WHERE "OrderID" = {order_id} RETURNING * """
+        query = f"""UPDATE orders SET "total_price" = {total_price} WHERE "order_id" = {order_id} RETURNING * """
     else:
         for item in results:
-            TotalPrice += int(item['Quantity']) * float(item['UnitPrice'])
-        query = f"""UPDATE orders SET "TotalPrice" = {TotalPrice} WHERE "OrderID" = {order_id} RETURNING * """
-    db.execute(query)
-    db.commit()
+            total_price += int(item['quantity']) * float(item['unit_price'])
+        query = f"""UPDATE orders SET "total_price" = {total_price} WHERE "order_id" = {order_id} RETURNING * """
+    query_to_database_processor(query)
