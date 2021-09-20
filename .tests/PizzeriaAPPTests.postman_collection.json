@@ -6,10 +6,10 @@
 	},
 	"item": [
 		{
-			"name": "Menu Tests",
+			"name": "MenuItems Tests",
 			"item": [
 				{
-					"name": "Menu_AddItem_Returns201WithBody",
+					"name": "MenuItems_AddItem_Returns201WithBody",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -25,15 +25,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-									"pm.test(\"Test POST Menu item\", function () {\r",
+									"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+									"pm.test(\"Test POST menu_items item\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -56,7 +56,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+							"raw": "{\r\n  \"name\": \"Pepperoni\",\r\n  \"price\": 23,\r\n  \"category\": \"Pizza\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/menu",
@@ -71,13 +71,13 @@
 					"response": []
 				},
 				{
-					"name": "Menu_GetAllItems_Returns200",
+					"name": "MenuItems_GetAllItems_Returns200",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test GET Menu\", function () {\r",
+									"pm.test(\"Test GET menu_items\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"});"
 								],
@@ -101,21 +101,21 @@
 					"response": []
 				},
 				{
-					"name": "Menu_GetItemByMenuID_Returns201WithBody",
+					"name": "MenuItems_GetItemByMenuID_Returns201WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Menu item by MenuID\", function () {\r",
+									"pm.test(\"Test GET menu_items item by menu_id\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -126,34 +126,34 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}",
+							"raw": "{{url}}/menu/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Menu_GetItemByName_Returns201WithBody",
+					"name": "MenuItems_GetItemByName_Returns201WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Menu item by Name\", function () {\r",
+									"pm.test(\"Test GET menu_items item by name\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -164,13 +164,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}?name=pepperoni",
+							"raw": "{{url}}/menu/{{menu_id}}?name=pepperoni",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							],
 							"query": [
 								{
@@ -183,21 +183,21 @@
 					"response": []
 				},
 				{
-					"name": "Menu_GetItemByCategory_Returns201WithBody",
+					"name": "MenuItems_GetItemByCategory_Returns201WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Menu item by Name\", function () {\r",
+									"pm.test(\"Test GET menu_items item by category\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -208,13 +208,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}?category=pizza",
+							"raw": "{{url}}/menu/{{menu_id}}?category=pizza",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							],
 							"query": [
 								{
@@ -227,21 +227,21 @@
 					"response": []
 				},
 				{
-					"name": "Menu_EditItem_Returns200WithBody",
+					"name": "MenuItems_EditItem_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Menu item\", function () {\r",
+									"pm.test(\"Test PATCH menu_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -264,37 +264,37 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"Changed\",\r\n    \"Price\": 50,\r\n    \"Category\": \"New category\"\r\n}"
+							"raw": "{\r\n    \"naem\": \"Changed\",\r\n    \"price\": 50,\r\n    \"category\": \"New category\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}",
+							"raw": "{{url}}/menu/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Menu_EditItemWithNoData_Returns200WithBody",
+					"name": "MenuItems_EditItemWithNoData_Returns200WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Menu item\", function () {\r",
+									"pm.test(\"Test PATCH menu_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -320,34 +320,34 @@
 							"raw": "{\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}",
+							"raw": "{{url}}/menu/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Menu_EditItemWithWrongData_Returns422WithBody",
+					"name": "MenuItems_EditItemWithWrongData_Returns422WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Menu item\", function () {\r",
+									"pm.test(\"Test PATCH menu_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Category).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.Name).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.category).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -370,29 +370,29 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Wrong\": \"Data\"\r\n}"
+							"raw": "{\r\n    \"wrong\": \"Data\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}",
+							"raw": "{{url}}/menu/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Menu_DeleteItem_Returns204",
+					"name": "MenuItems_DeleteItem_Returns204",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test DELETE Menu item\", function () {\r",
+									"pm.test(\"Test DELETE menu_items item\", function () {\r",
 									"    pm.response.to.have.status(204)\r",
 									"});"
 								],
@@ -404,27 +404,27 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/menu/{{MenuID}}",
+							"raw": "{{url}}/menu/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"menu",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Menu_GetItemWithWrongID_Returns404WithBody",
+					"name": "MenuItems_GetItemWithWrongID_Returns404WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Menu item with wrong MenuID\", function () {\r",
+									"pm.test(\"Test GET menu_items item with wrong menu_id\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -450,14 +450,14 @@
 					"response": []
 				},
 				{
-					"name": "Menu_AddItemWithNotEnoughData_Returns422WithBody",
+					"name": "MenuItems_AddItemWithNotEnoughData_Returns422WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST Menu item with not enough data\", function () {\r",
+									"pm.test(\"Test POST menu_items item with not enough data\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -483,7 +483,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"Not enough data\"\r\n}"
+							"raw": "{\r\n    \"name\": \"Not enough data\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/menu",
@@ -498,14 +498,14 @@
 					"response": []
 				},
 				{
-					"name": "Menu_AddItemWithNoneValue_Returns422WithBody",
+					"name": "MenuItems_AddItemWithNoneValue_Returns422WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST Menu item using None as values\", function () {\r",
+									"pm.test(\"Test POST menu_items item using None as values\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -531,7 +531,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": None,\r\n    \"Price\": None,\r\n    \"Category\": None\r\n}"
+							"raw": "{\r\n    \"name\": None,\r\n    \"price\": None,\r\n    \"category\": None\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/menu",
@@ -546,14 +546,14 @@
 					"response": []
 				},
 				{
-					"name": "Menu_DeleteWrongItem_Returns404WithBody",
+					"name": "MenuItems_DeleteWrongItem_Returns404WithBody",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test DELETE Menu item\", function () {\r",
+									"pm.test(\"Test DELETE menu_items item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -587,7 +587,7 @@
 					"name": "Additional preparation for later tests",
 					"item": [
 						{
-							"name": "Menu_AddItem_Returns201",
+							"name": "MenuItems_AddItem_Returns201",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -603,8 +603,8 @@
 									"script": {
 										"exec": [
 											"const jsonData = pm.response.json();\r",
-											"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-											"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+											"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+											"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 											"    pm.response.to.have.status(201)\r",
 											"});"
 										],
@@ -628,7 +628,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+									"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 								},
 								"url": {
 									"raw": "{{url}}/menu",
@@ -661,15 +661,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -692,7 +692,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": {{MenuID}},\r\n            \"Quantity\": 1\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\",\r\n    \"ordered_items\": [\r\n        {\r\n            \"menu_id\": {{menu_id}},\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -723,15 +723,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -754,7 +754,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+							"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -785,14 +785,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.null\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.null\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.null\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.null\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -836,7 +836,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test GET Orders\", function () {\r",
+									"pm.test(\"Test GET orders\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"});"
 								],
@@ -867,14 +867,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
+									"pm.test(\"Test GET orders item by order_id\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -885,13 +885,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}",
+							"raw": "{{url}}/orders/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"orders",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -905,14 +905,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Orders item by email\", function () {\r",
+									"pm.test(\"Test GET orders item by email\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData[0].order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData[0].total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -923,13 +923,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}?email=test",
+							"raw": "{{url}}/orders?email=test",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"orders",
-								"{{OrderID}}"
+								"orders"
 							],
 							"query": [
 								{
@@ -949,14 +948,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Orders item\", function () {\r",
+									"pm.test(\"Test PATCH orders item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -979,16 +978,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Test comment changed\",\r\n    \"Email\": \"test@changed.com\"\r\n}"
+							"raw": "{\r\n    \"comments\": \"Test comment changed\",\r\n    \"email\": \"test@changed.com\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}",
+							"raw": "{{url}}/orders/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"orders",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -1002,14 +1001,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Orders item\", function () {\r",
+									"pm.test(\"Test PATCH orders item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1035,13 +1034,13 @@
 							"raw": "{\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}",
+							"raw": "{{url}}/orders/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"orders",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -1055,14 +1054,14 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH Orders item\", function () {\r",
+									"pm.test(\"Test PATCH orders item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Comments).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.Email).to.be.a(\"string\")\r",
-									"    pm.expect(jsonData.TotalPrice).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.comments).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\")\r",
+									"    pm.expect(jsonData.total_price).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1085,16 +1084,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Wrong\": \"Data\"\r\n}"
+							"raw": "{\r\n    \"wrong\": \"Data\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}",
+							"raw": "{{url}}/orders/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"orders",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -1107,7 +1106,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test DELETE Orders item\", function () {\r",
+									"pm.test(\"Test DELETE orders item\", function () {\r",
 									"    pm.response.to.have.status(204)\r",
 									"});"
 								],
@@ -1119,13 +1118,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/orders/{{OrderID}}",
+							"raw": "{{url}}/orders/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"orders",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -1139,7 +1138,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET Order items with wrong OrderID\", function () {\r",
+									"pm.test(\"Test GET order items with wrong order_id\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -1181,7 +1180,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -1206,7 +1205,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": 0,\r\n            \"Quantity\": 1\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\",\r\n    \"ordered_items\": [\r\n        {\r\n            \"menu_id\": 0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -1237,7 +1236,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -1263,7 +1262,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": {{MenuID}},\r\n            \"Quantity\": 0\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\",\r\n    \"ordered_items\": [\r\n        {\r\n            \"menu_id\": {{menu_id}},\r\n            \"quantity\": 0\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -1294,8 +1293,8 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-									"pm.test(\"Test POST Orders item\", function () {\r",
+									"pm.collectionVariables.set(\"order_id\", jsonData.OrderID);\r",
+									"pm.test(\"Test POST orders item\", function () {\r",
 									"    pm.response.to.have.status(400)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -1320,7 +1319,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Email\": \"wrong_email\"\r\n}"
+							"raw": "{\r\n    \"email\": \"wrong_email\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -1341,7 +1340,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test POST Orders item with long text as a comment\", function () {\r",
+									"pm.test(\"Test POST orders item with long text as a comment\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"});"
 								],
@@ -1365,7 +1364,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Comments\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at elit risus. Nulla et consectetur felis. Cras quis ultricies lacus. Fusce vulputate est risus, nec gravida enim sagittis vel. Duis ligula magna, finibus nec est sed, cursus sodales purus. In ut diam eget dui sollicitudin semper. Morbi sodales mi sed est tempor condimentum. Vivamus a porttitor ipsum. Ut ut iaculis augue. Quisque lacinia est ornare justo mollis feugiat. Sed hendrerit porta metus et tempor.\"\r\n}"
+							"raw": "{\r\n    \"comments\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at elit risus. Nulla et consectetur felis. Cras quis ultricies lacus. Fusce vulputate est risus, nec gravida enim sagittis vel. Duis ligula magna, finibus nec est sed, cursus sodales purus. In ut diam eget dui sollicitudin semper. Morbi sodales mi sed est tempor condimentum. Vivamus a porttitor ipsum. Ut ut iaculis augue. Quisque lacinia est ornare justo mollis feugiat. Sed hendrerit porta metus et tempor.\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/orders",
@@ -1387,7 +1386,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test DELETE Orders item\", function () {\r",
+									"pm.test(\"Test DELETE orders item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -1421,7 +1420,7 @@
 					"name": "Additional preparation for later tests",
 					"item": [
 						{
-							"name": "Menu_AddItem_Returns201",
+							"name": "MenuItems_AddItem_Returns201",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1437,8 +1436,8 @@
 									"script": {
 										"exec": [
 											"const jsonData = pm.response.json();\r",
-											"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-											"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+											"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+											"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 											"    pm.response.to.have.status(201)\r",
 											"});"
 										],
@@ -1462,7 +1461,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+									"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 								},
 								"url": {
 									"raw": "{{url}}/menu",
@@ -1493,8 +1492,8 @@
 									"script": {
 										"exec": [
 											"const jsonData = pm.response.json();\r",
-											"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-											"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+											"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+											"pm.test(\"Additional test POST orders item 201 status code\", function () {\r",
 											"    pm.response.to.have.status(201)\r",
 											"});"
 										],
@@ -1518,7 +1517,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+									"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 								},
 								"url": {
 									"raw": "{{url}}/orders",
@@ -1551,16 +1550,16 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-									"pm.test(\"Test POST OrderedItems item\", function () {\r",
+									"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+									"pm.test(\"Test POST ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(201)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1583,7 +1582,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 5\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 5\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/ordereditems",
@@ -1604,7 +1603,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test GET OrderedItems\", function () {\r",
+									"pm.test(\"Test GET ordered_items\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"});"
 								],
@@ -1635,15 +1634,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET OrderedItems by OrderedItemID\", function () {\r",
+									"pm.test(\"Test GET ordered_item by ordered_item_id\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1654,13 +1653,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -1674,15 +1673,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET OrderedItems by OrderID\", function () {\r",
+									"pm.test(\"Test GET ordered_item by order_id\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData[0].Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1693,14 +1692,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ordereditems/orderid/{{OrderID}}",
+							"raw": "{{url}}/ordereditems/orderid/{{order_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
 								"orderid",
-								"{{OrderID}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -1714,15 +1713,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET OrderedItems by MenuID\", function () {\r",
+									"pm.test(\"Test GET ordered_item by menu_id\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData[0].Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData[0].OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData[0].order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1733,14 +1732,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ordereditems/menuid/{{MenuID}}",
+							"raw": "{{url}}/ordereditems/menuid/{{menu_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
 								"menuid",
-								"{{MenuID}}"
+								"{{menu_id}}"
 							]
 						}
 					},
@@ -1754,15 +1753,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH OrderedItems item\", function () {\r",
+									"pm.test(\"Test PATCH ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1785,16 +1784,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 4,\r\n    \"UnitPrice\": 7\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 4,\r\n    \"unit_price\": 7\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -1808,16 +1807,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH OrderedItems item\", function () {\r",
+									"pm.test(\"Test PATCH ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.eql(23)\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1840,16 +1838,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 4\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 4\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -1863,15 +1861,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH OrderedItems item\", function () {\r",
+									"pm.test(\"Test PATCH ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1897,13 +1895,13 @@
 							"raw": "{\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -1917,15 +1915,15 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test PATCH OrderedItems item\", function () {\r",
+									"pm.test(\"Test PATCH ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(200)\r",
 									"    pm.response.to.have.header(\"Content-Type\")\r",
 									"    pm.response.headers[\"Content-Type\"] == \"application/json\"\r",
-									"    pm.expect(jsonData.Quantity).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.MenuID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderedItemID).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.UnitPrice).to.be.a(\"number\")\r",
-									"    pm.expect(jsonData.OrderID).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.quantity).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.menu_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.ordered_item_id).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.unit_price).to.be.a(\"number\")\r",
+									"    pm.expect(jsonData.order_id).to.be.a(\"number\")\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1948,16 +1946,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Wrong\": \"Data\"\r\n}"
+							"raw": "{\r\n    \"wrong\": \"Data\"\r\n}"
 						},
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -1970,7 +1968,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test DELETE OrderedItems item\", function () {\r",
+									"pm.test(\"Test DELETE ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(204)\r",
 									"});"
 								],
@@ -1982,13 +1980,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+							"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"{{OrderedItemID}}"
+								"{{ordered_item_id}}"
 							]
 						}
 					},
@@ -2002,7 +2000,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test GET OrderedItems item with wrong OrderedItemID\", function () {\r",
+									"pm.test(\"Test GET ordered_items item with wrong ordered_item_id\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -2035,7 +2033,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST OrderedItems item with not enough data\", function () {\r",
+									"pm.test(\"Test POST ordered_items item with not enough data\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -2061,7 +2059,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}}\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}}\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/ordereditems",
@@ -2083,7 +2081,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST OrderedItems item using None as values\", function () {\r",
+									"pm.test(\"Test POST ordered_items item using None as values\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -2109,7 +2107,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": None,\r\n    \"OrderID\": None,\r\n    \"Quantity\": None\r\n}"
+							"raw": "{\r\n    \"menu_id\": None,\r\n    \"order_id\": None,\r\n    \"quantity\": None\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/menu",
@@ -2131,7 +2129,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test DELETE OrderedItems item\", function () {\r",
+									"pm.test(\"Test DELETE ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -2173,7 +2171,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST OrderedItems item\", function () {\r",
+									"pm.test(\"Test POST ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -2198,7 +2196,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": 0,\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 5\r\n}"
+							"raw": "{\r\n    \"menu_id\": 0,\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 5\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/ordereditems",
@@ -2229,7 +2227,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST OrderedItems item\", function () {\r",
+									"pm.test(\"Test POST ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(404)\r",
 									"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 									"});"
@@ -2254,7 +2252,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": 0,\r\n    \"Quantity\": 5\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": 0,\r\n    \"quantity\": 5\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/ordereditems",
@@ -2285,7 +2283,7 @@
 							"script": {
 								"exec": [
 									"const jsonData = pm.response.json();\r",
-									"pm.test(\"Test POST OrderedItems item\", function () {\r",
+									"pm.test(\"Test POST ordered_items item\", function () {\r",
 									"    pm.response.to.have.status(422)\r",
 									"    pm.expect(jsonData.detail[0].msg).to.be.a(\"string\")\r",
 									"    pm.expect(jsonData.detail[0].type).to.be.a(\"string\")\r",
@@ -2311,7 +2309,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 0\r\n}"
+							"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 0\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/ordereditems",
@@ -2356,8 +2354,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Additional test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2381,7 +2379,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -2405,8 +2403,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(0)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(0)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -2417,13 +2415,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -2438,7 +2436,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -2454,8 +2452,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2479,7 +2477,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -2510,8 +2508,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Additional test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Additional test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2535,7 +2533,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\",\r\n    \"OrderedItems\": [\r\n        {\r\n            \"MenuID\": {{MenuID}},\r\n            \"Quantity\": 2\r\n        }\r\n    ]\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\",\r\n    \"ordered_items\": [\r\n        {\r\n            \"menu_id\": {{menu_id}},\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -2559,8 +2557,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(46)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(46)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -2571,13 +2569,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -2592,7 +2590,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -2608,8 +2606,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2633,7 +2631,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -2664,8 +2662,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2689,7 +2687,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -2720,8 +2718,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2745,7 +2743,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -2769,8 +2767,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(46)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(46)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -2781,13 +2779,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -2802,7 +2800,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -2818,8 +2816,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2843,7 +2841,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -2874,8 +2872,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2899,7 +2897,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -2929,11 +2927,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
-															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"/* This seemingly unnecessary step (we could post an order with initial ordered_items instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store ordered_item_id for later to do a PATCH request on this exact ordered_item */\r",
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -2957,7 +2955,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -2979,7 +2977,7 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.test(\"Additional test PATCH OrderedItems item 200 status code\", function () {\r",
+															"pm.test(\"Additional test PATCH ordered_items item 200 status code\", function () {\r",
 															"    pm.response.to.have.status(200)\r",
 															"});"
 														],
@@ -3003,16 +3001,16 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 5,\r\n    \"UnitPrice\": 20\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 5,\r\n    \"unit_price\": 20\r\n}"
 												},
 												"url": {
-													"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+													"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 													"host": [
 														"{{url}}"
 													],
 													"path": [
 														"ordereditems",
-														"{{OrderedItemID}}"
+														"{{ordered_item_id}}"
 													]
 												}
 											},
@@ -3028,8 +3026,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(100)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(100)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -3040,13 +3038,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -3061,7 +3059,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -3077,8 +3075,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3102,7 +3100,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -3133,8 +3131,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3158,7 +3156,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -3188,11 +3186,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
-															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"/* This seemingly unnecessary step (we could post an order with initial ordered_items instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store ordered_item_id for later to do a PATCH request on this exact ordered_item */\r",
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3216,7 +3214,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -3237,7 +3235,7 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Additional test DELETE OrderedItems item 204 status code\", function () {\r",
+															"pm.test(\"Additional test DELETE ordered_items item 204 status code\", function () {\r",
 															"    pm.response.to.have.status(204)\r",
 															"});"
 														],
@@ -3249,13 +3247,13 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{url}}/ordereditems/{{OrderedItemID}}",
+													"raw": "{{url}}/ordereditems/{{ordered_item_id}}",
 													"host": [
 														"{{url}}"
 													],
 													"path": [
 														"ordereditems",
-														"{{OrderedItemID}}"
+														"{{ordered_item_id}}"
 													]
 												}
 											},
@@ -3271,8 +3269,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(0)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(0)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -3283,13 +3281,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -3304,7 +3302,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -3320,8 +3318,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3345,7 +3343,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -3376,8 +3374,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3401,7 +3399,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -3431,11 +3429,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
-															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"/* This seemingly unnecessary step (we could post an order with initial ordered_items instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store ordered_item_id for later to do a PATCH request on this exact ordered_item */\r",
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3459,7 +3457,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -3474,13 +3472,13 @@
 											"response": []
 										},
 										{
-											"name": "Menu_DeleteItem_Returns204",
+											"name": "MenuItems_DeleteItem_Returns204",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Additional test DELETE OrderedItems item 204 status code\", function () {\r",
+															"pm.test(\"Additional test DELETE menu_items item 204 status code\", function () {\r",
 															"    pm.response.to.have.status(204)\r",
 															"});"
 														],
@@ -3492,13 +3490,13 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{url}}/menu/{{MenuID}}",
+													"raw": "{{url}}/menu/{{menu_id}}",
 													"host": [
 														"{{url}}"
 													],
 													"path": [
 														"menu",
-														"{{MenuID}}"
+														"{{menu_id}}"
 													]
 												}
 											},
@@ -3514,8 +3512,8 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Orders item by OrderID\", function () {\r",
-													"    pm.expect(jsonData.TotalPrice).to.be.equal(0)\r",
+													"pm.test(\"Test GET orders item by order_id\", function () {\r",
+													"    pm.expect(jsonData.total_price).to.be.equal(0)\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -3526,13 +3524,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/orders/{{OrderID}}",
+											"raw": "{{url}}/orders/{{order_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"orders",
-												"{{OrderID}}"
+												"{{order_id}}"
 											]
 										}
 									},
@@ -3552,7 +3550,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -3568,8 +3566,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3593,7 +3591,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -3624,8 +3622,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3649,7 +3647,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -3679,11 +3677,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
-															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"/* This seemingly unnecessary step (we could post an order with initial ordered_items instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store ordered_item_id for later to do a PATCH request on this exact ordered_item */\r",
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3707,7 +3705,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -3722,13 +3720,13 @@
 											"response": []
 										},
 										{
-											"name": "Menu_DeleteItem_Returns204",
+											"name": "MenuItems_DeleteItem_Returns204",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Additional test DELETE OrderedItems item 204 status code\", function () {\r",
+															"pm.test(\"Additional test DELETE menu_items item 204 status code\", function () {\r",
 															"    pm.response.to.have.status(204)\r",
 															"});"
 														],
@@ -3740,13 +3738,13 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{url}}/menu/{{MenuID}}",
+													"raw": "{{url}}/menu/{{menu_id}}",
 													"host": [
 														"{{url}}"
 													],
 													"path": [
 														"menu",
-														"{{MenuID}}"
+														"{{menu_id}}"
 													]
 												}
 											},
@@ -3762,7 +3760,7 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Menu item with deleted MenuID\", function () {\r",
+													"pm.test(\"Test GET menu item with deleted menu_id\", function () {\r",
 													"    pm.response.to.have.status(404)\r",
 													"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 													"});"
@@ -3775,13 +3773,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/ordereditems/{{MenuID}}",
+											"raw": "{{url}}/ordereditems/{{menu_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"ordereditems",
-												"{{MenuID}}"
+												"{{menu_id}}"
 											]
 										}
 									},
@@ -3796,7 +3794,7 @@
 									"name": "Additional preparation for later tests",
 									"item": [
 										{
-											"name": "Menu_AddItem_Returns201",
+											"name": "MenuItems_AddItem_Returns201",
 											"event": [
 												{
 													"listen": "prerequest",
@@ -3812,8 +3810,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"MenuID\", jsonData.MenuID);\r",
-															"pm.test(\"Additional test POST Menu item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"menu_id\", jsonData.menu_id);\r",
+															"pm.test(\"Additional test POST menu_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3837,7 +3835,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Name\": \"Pepperoni\",\r\n    \"Price\": 23,\r\n    \"Category\": \"Pizza\"\r\n}"
+													"raw": "{\r\n    \"name\": \"Pepperoni\",\r\n    \"price\": 23,\r\n    \"category\": \"Pizza\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/menu",
@@ -3868,8 +3866,8 @@
 													"script": {
 														"exec": [
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);\r",
-															"pm.test(\"Test POST Orders item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"order_id\", jsonData.order_id);\r",
+															"pm.test(\"Test POST orders item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3893,7 +3891,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Comments\": \"Test comment\",\r\n    \"Email\": \"test@email.com\"\r\n}"
+													"raw": "{\r\n    \"comments\": \"Test comment\",\r\n    \"email\": \"test@email.com\"\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/orders",
@@ -3923,11 +3921,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"/* This seemingly unnecessary step (we could post an Order with initial OrderItems instead of doing it in two steps) \r",
-															"is actually neccessary to easly get and store OrderedItemID for later to do a PATCH request on this exact OrderedItem */\r",
+															"/* This seemingly unnecessary step (we could post an order with initial ordered_items instead of doing it in two steps) \r",
+															"is actually neccessary to easly get and store ordered_item_id for later to do a PATCH request on this exact ordered_item */\r",
 															"const jsonData = pm.response.json();\r",
-															"pm.collectionVariables.set(\"OrderedItemID\", jsonData.OrderedItemID);\r",
-															"pm.test(\"Additional test POST OrderedItems item 201 status code\", function () {\r",
+															"pm.collectionVariables.set(\"ordered_item_id\", jsonData.ordered_item_id);\r",
+															"pm.test(\"Additional test POST ordered_items item 201 status code\", function () {\r",
 															"    pm.response.to.have.status(201)\r",
 															"});"
 														],
@@ -3951,7 +3949,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"MenuID\": {{MenuID}},\r\n    \"OrderID\": {{OrderID}},\r\n    \"Quantity\": 2\r\n}"
+													"raw": "{\r\n    \"menu_id\": {{menu_id}},\r\n    \"order_id\": {{order_id}},\r\n    \"quantity\": 2\r\n}"
 												},
 												"url": {
 													"raw": "{{url}}/ordereditems",
@@ -3972,7 +3970,7 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Additional test DELETE OrderedItems item 204 status code\", function () {\r",
+															"pm.test(\"Additional test DELETE orders item 204 status code\", function () {\r",
 															"    pm.response.to.have.status(204)\r",
 															"});"
 														],
@@ -3984,13 +3982,13 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{url}}/orders/{{OrderID}}",
+													"raw": "{{url}}/orders/{{order_id}}",
 													"host": [
 														"{{url}}"
 													],
 													"path": [
 														"orders",
-														"{{OrderID}}"
+														"{{order_id}}"
 													]
 												}
 											},
@@ -4006,7 +4004,7 @@
 											"script": {
 												"exec": [
 													"const jsonData = pm.response.json();\r",
-													"pm.test(\"Test GET Menu item with deleted MenuID\", function () {\r",
+													"pm.test(\"Test GET menu item with deleted menu_id\", function () {\r",
 													"    pm.response.to.have.status(404)\r",
 													"    pm.expect(jsonData.detail).to.be.a(\"string\")\r",
 													"});"
@@ -4019,13 +4017,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/ordereditems/{{MenuID}}",
+											"raw": "{{url}}/ordereditems/{{menu_id}}",
 											"host": [
 												"{{url}}"
 											],
 											"path": [
 												"ordereditems",
-												"{{MenuID}}"
+												"{{menu_id}}"
 											]
 										}
 									},
@@ -4064,15 +4062,15 @@
 			"value": ""
 		},
 		{
-			"key": "MenuID",
+			"key": "menu_id",
 			"value": ""
 		},
 		{
-			"key": "OrderID",
+			"key": "order_id",
 			"value": ""
 		},
 		{
-			"key": "OrderedItemID",
+			"key": "ordered_item_id",
 			"value": ""
 		}
 	]
