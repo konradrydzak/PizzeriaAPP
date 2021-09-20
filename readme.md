@@ -23,6 +23,7 @@ You can preview the app at: http://srv08.mikr.us:20263/docs
 - implemented CRUD functionality
 - applied ORM with SQLAlchemy and raw SQL (and an option to select which one to use)
 - prepared end2end RestAPI tests collection in Postman (and an additional simpler version to use with pytest)
+- hosted the PizzeriaAPP
 
 ### Possible improvements
 - prepare a better database that adds a relation between main dishes and addons (now theoretically you can pick just an addon from the menu)
