@@ -1732,13 +1732,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/ordereditems/menuid/{{menu_item_id}}",
+							"raw": "{{url}}/ordereditems/menuitemid/{{menu_item_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"ordereditems",
-								"menuid",
+								"menuitemid",
 								"{{menu_item_id}}"
 							]
 						}
