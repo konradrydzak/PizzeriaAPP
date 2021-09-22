@@ -26,6 +26,7 @@ You can preview the app at: http://srv08.mikr.us:20263/docs
 - hosted the PizzeriaAPP
 
 ### Possible improvements
+- improve project structure (organize the code into controllers, services, etc.)
 - prepare a better database that adds a relation between main dishes and addons (now theoretically you can pick just an addon from the menu)
 - provide a way to store history of orders and ordereditems (even for items that are deleted such as menu positions)
 - implement authorization to restrict database access (for example restrict menu_items table only to admin)
