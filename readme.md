@@ -15,7 +15,7 @@ You can preview the app at: http://srv08.mikr.us:20263/docs
 - Should store a history of orders
 
 ## Entity-Relationship Diagram
-![PizzeriaAPP-ERD.png.png](docs/PizzeriaAPP-ERD.png "Simple ERD diagram for a pizza place")
+![PizzeriaAPP-ERD.png](docs/PizzeriaAPP-ERD.png "Simple ERD diagram for a pizza place")
 
 ## Skills used
 - dockerized PostgreSQL database and APP
