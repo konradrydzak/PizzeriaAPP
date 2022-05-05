@@ -1,7 +1,7 @@
 FROM python:3.9
 
-COPY ./src /src
 COPY requirements.txt requirements.txt
+COPY ./src /src
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt

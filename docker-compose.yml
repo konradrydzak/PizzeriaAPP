@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: PizzeriaDB
+    image: postgres:14.0
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=pizzeria
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=PizzeriaPassword
+    healthcheck:
+      test: "exit 0"
+  
+  pizzeria:
+    container_name: PizzeriaAPP
+    build: .
+    ports: 
+      - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
