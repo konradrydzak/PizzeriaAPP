@@ -1,8 +1,0 @@
-[postgresql]
-host=
-port=
-database=
-user=
-password=
-database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(database)s
-use_orm=
