@@ -9,6 +9,7 @@ You can preview the app at: http://srv08.mikr.us:40127/docs
 
 1. Make sure the values in *src/database.ini* and *docker-compose.yml* are matching
 2. Run command: *docker-compose up -d*
+3. App should be running at: http://localhost:8000/docs
 
 ## Requirements
 
