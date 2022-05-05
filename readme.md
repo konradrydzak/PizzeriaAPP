@@ -3,8 +3,12 @@ Project for self learning purposes - featuring: API (FastAPI), containers (Docke
 
 Simulates a working pizza place.
 
-You can preview the app at: http://srv08.mikr.us:20263/docs
+You can preview the app at: http://srv08.mikr.us:40127/docs
 
+## Setup
+
+1. Make sure the values in *src/database.ini* and *docker-compose.yml* are matching
+2. Run command: *docker-compose up -d*
 
 ## Requirements
 
