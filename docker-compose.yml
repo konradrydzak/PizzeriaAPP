@@ -7,9 +7,9 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=pizzeria
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=PizzeriaPassword
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: "exit 0"
   
