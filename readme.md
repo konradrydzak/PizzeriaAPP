@@ -7,8 +7,30 @@ You can preview the app at: http://srv08.mikr.us:40127/docs
 
 ## Setup
 
-1. Make sure the values in *src/database.ini* and *docker-compose.yml* are matching
-2. Run command: *docker-compose up -d*
+1. Fill in required details in *src/database.ini* and *.env* files:
+
+***src/database.ini***
+
+```
+[postgresql]
+host=postgres
+port=5432
+database=pizzeria
+user=postgres
+password=PizzeriaPassword
+database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(database)s
+use_orm=False
+```
+
+***.env***
+
+```
+POSTGRES_DB=pizzeria
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=PizzeriaPassword
+```
+
+2. Run command: `docker-compose up -d`
 3. App should be running at: http://localhost:8000/docs
 
 ## Requirements
@@ -26,7 +48,7 @@ You can preview the app at: http://srv08.mikr.us:40127/docs
 - dockerized PostgreSQL database and APP
 - created a functioning API with FastAPI
 - implemented CRUD functionality
-- applied ORM with SQLAlchemy and raw SQL (and an option to select which one to use)
+- applied ORM with SQLAlchemy and raw SQL (and an option in *src/database.ini* to select which one to use)
 - prepared end2end RestAPI tests collection in Postman (and an additional simpler version to use with pytest)
 - hosted the PizzeriaAPP
 
