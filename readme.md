@@ -33,7 +33,7 @@ POSTGRES_PASSWORD=PizzeriaPassword
 2. Run command: `docker-compose up -d`
 3. App should be running at: http://localhost:8000/docs
 
-## Requirements
+## Requirements for the simulated task
 
 - Filled menu with many positions, names, prices and categories
 - Should allow to pick any combination of menu positions
