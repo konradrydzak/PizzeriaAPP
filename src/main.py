@@ -4,13 +4,15 @@ import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from src import config
+from src import crud_orm
+from src import crud_sql
 from src import models
-from src import schemas, crud_sql, crud_orm
+from src import schemas
+from src.config import config
 from src.database import SessionLocal, engine
 
 # SET ORM/SQL MODE TO USE
-params = config.config()
+params = config()
 USE_ORM = params["use_orm"]
 if USE_ORM == "True":
     crud = crud_orm

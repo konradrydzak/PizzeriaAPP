@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.config import config
 
-# Setup a database connection with SQLAlchemy
+# Set up a database connection with SQLAlchemy
 params = config()
 DATABASE_URL = params['database_url']
 
