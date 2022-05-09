@@ -7,20 +7,7 @@ You can preview the app at: http://srv08.mikr.us:40127/docs
 
 ## Setup
 
-1. Fill in required details in *src/database.ini* and *.env* files:
-
-***src/database.ini***
-
-```
-[postgresql]
-host=postgres
-port=5432
-database=pizzeria
-user=postgres
-password=PizzeriaPassword
-database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(database)s
-use_orm=False
-```
+1. Fill in required details in *.env* and *database.ini* files (in root of repo):
 
 ***.env***
 
@@ -28,6 +15,23 @@ use_orm=False
 POSTGRES_DB=pizzeria
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=PizzeriaPassword
+POSTGRES_EXTERNAL_PORT=5432
+PIZZERIA_EXTERNAL_PORT=8000
+
+```
+
+***database.ini***
+
+```
+[postgresql]
+name=pizzeria
+host=postgres
+port=5432
+user=postgres
+password=PizzeriaPassword
+database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(name)s
+use_orm=False
+
 ```
 
 2. Run command: `docker-compose up -d`
