@@ -12,7 +12,7 @@ url = "http://127.0.0.1:8000"
 
 # MENU TESTS
 
-menu_id = 0  # needed to pass information between tests
+menu_item_id = 0  # needed to pass information between tests
 
 
 def test_menu_endpoint_status_code_equals_200():
@@ -26,13 +26,13 @@ def test_menu_item_get_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['name']) == str
-    assert type(resp_body['menu_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['price']) == float
     assert type(resp_body['category']) == str
 
 
 def test_menu_item_post_endpoint():
-    global menu_id
+    global menu_item_id
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -46,17 +46,17 @@ def test_menu_item_post_endpoint():
     response = requests.post(url + "/menu", data=json.dumps(data),
                              headers=headers)
     resp_body = response.json()
-    menu_id = resp_body['menu_id']
+    menu_item_id = resp_body['id']
     assert response.status_code == 201
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['name']) == str
-    assert type(resp_body['menu_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['price']) == float
     assert type(resp_body['category']) == str
 
 
 def test_menu_item_patch_endpoint():
-    global menu_id
+    global menu_item_id
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -67,20 +67,20 @@ def test_menu_item_patch_endpoint():
         "price": 50,
         "category": "New category"
     }
-    response = requests.patch(url + "/menu/" + str(menu_id), data=json.dumps(data),
+    response = requests.patch(url + "/menu/" + str(menu_item_id), data=json.dumps(data),
                               headers=headers)
     resp_body = response.json()
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['name']) == str
-    assert type(resp_body['menu_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['price']) == float
     assert type(resp_body['category']) == str
 
 
 def test_menu_item_delete_endpoint():
-    global menu_id
-    response = requests.delete(url + "/menu/" + str(menu_id))
+    global menu_item_id
+    response = requests.delete(url + "/menu/" + str(menu_item_id))
     assert response.status_code == 204
 
 
@@ -112,11 +112,11 @@ def test_orders_post_endpoint():
         "email": "test@email.com",
         "ordered_items": [
             {
-                "menu_id": 1,
+                "menu_item_id": 1,
                 "quantity": 1
             },
             {
-                "menu_id": 18,
+                "menu_item_id": 18,
                 "quantity": 2
             }
         ]
@@ -124,11 +124,11 @@ def test_orders_post_endpoint():
     response = requests.post(url + "/orders", data=json.dumps(data),
                              headers=headers)
     resp_body = response.json()
-    order_id = resp_body['order_id']
+    order_id = resp_body['id']
     assert response.status_code == 201
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['comments']) == str
-    assert type(resp_body['order_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['email']) == str
     assert type(resp_body['total_price']) == float
 
@@ -144,7 +144,7 @@ def test_orders_get_by_id_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['comments']) == str
-    assert type(resp_body['order_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['email']) == str
     assert type(resp_body['total_price']) == float
 
@@ -166,7 +166,7 @@ def test_orders_patch_data_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['comments']) == str
-    assert type(resp_body['order_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['email']) == str
     assert type(resp_body['total_price']) == float
 
@@ -177,27 +177,27 @@ def test_orders_patch_data_endpoint():
 def test_ordereditems_post_endpoint():
     global order_id
     global ordered_item_id
-    global menu_id
+    global menu_item_id
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
     }
 
-    menu_id = 17
+    menu_item_id = 17
     data = {
-        "menu_id": menu_id,
+        "menu_item_id": menu_item_id,
         "order_id": order_id,
         "quantity": 3
     }
     response = requests.post(url + "/ordereditems", data=json.dumps(data),
                              headers=headers)
     resp_body = response.json()
-    ordered_item_id = resp_body['ordered_item_id']
+    ordered_item_id = resp_body['id']
     assert response.status_code == 201
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['quantity']) == int
-    assert type(resp_body['menu_id']) == int
-    assert type(resp_body['ordered_item_id']) == int
+    assert type(resp_body['menu_item_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['unit_price']) == float
     assert type(resp_body['order_id']) == int
 
@@ -213,31 +213,31 @@ def test_ordereditems_get_by_id_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['quantity']) == int
-    assert type(resp_body['menu_id']) == int
-    assert type(resp_body['ordered_item_id']) == int
+    assert type(resp_body['menu_item_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['unit_price']) == float
     assert type(resp_body['order_id']) == int
 
 
 def test_ordereditems_orderid_get_by_id_endpoint():
-    response = requests.get(url + "/ordereditems/order_id/" + str(order_id))
+    response = requests.get(url + "/ordereditems/orderid/" + str(order_id))
     assert response.status_code == 200
 
 
 def test_ordereditems_menuid_get_by_id_endpoint():
-    response = requests.get(url + "/ordereditems/menu_id/" + str(menu_id))
+    response = requests.get(url + "/ordereditems/menuitemid/" + str(menu_item_id))
     assert response.status_code == 200
 
 
 def test_ordereditems_ordereditem_patch_endpoint():
-    global menu_id
+    global menu_item_id
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
     }
 
     data = {
-        "menu_id": 18,
+        "menu_item_id": 18,
         "order_id": order_id,
         "quantity": 4,
         "unit_price": 7
@@ -248,14 +248,14 @@ def test_ordereditems_ordereditem_patch_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert type(resp_body['quantity']) == int
-    assert type(resp_body['menu_id']) == int
-    assert type(resp_body['ordered_item_id']) == int
+    assert type(resp_body['menu_item_id']) == int
+    assert type(resp_body['id']) == int
     assert type(resp_body['unit_price']) == float
     assert type(resp_body['order_id']) == int
 
 
 def test_ordereditems_ordereditem_delete_endpoint():
-    global menu_id
+    global menu_item_id
     response = requests.delete(url + "/ordereditems/" + str(ordered_item_id))
     assert response.status_code == 204
 
@@ -301,7 +301,7 @@ def test_order_to_check_total_price():
     response = requests.post(url + "/orders", data=json.dumps(data),
                              headers=headers)
     resp_body = response.json()
-    order_id = resp_body['order_id']
+    order_id = resp_body['id']
     assert resp_body['total_price'] == 0
 
     # Add item to Order
@@ -311,14 +311,14 @@ def test_order_to_check_total_price():
     }
 
     data = {
-        "menu_id": 17,
+        "menu_item_id": 17,
         "order_id": order_id,
         "quantity": 3
     }
     response = requests.post(url + "/ordereditems", data=json.dumps(data),
                              headers=headers)
     resp_body = response.json()
-    ordered_item_id = resp_body['ordered_item_id']
+    ordered_item_id = resp_body['id']
 
     # Assert if total_price is correct
     total_price_should_be = resp_body['unit_price'] * resp_body['quantity']
@@ -355,7 +355,7 @@ def test_order_to_check_total_price():
     resp_body = response.json()
     assert resp_body['total_price'] == 0
 
-    # Finally delete order
+    # Finally, delete order
     requests.delete(url + "/orders/" + str(order_id))
 
 
@@ -397,7 +397,7 @@ def test_post_lorem_ipsum_to_orders():
                              headers=headers)
     assert response.status_code == 201
     resp_body = response.json()
-    order_id = resp_body['order_id']
+    order_id = resp_body['id']
     requests.delete(url + "/orders/" + str(order_id))
 
 
