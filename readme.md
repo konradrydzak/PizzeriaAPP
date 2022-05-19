@@ -24,12 +24,12 @@ PIZZERIA_EXTERNAL_PORT=8000
 
 ```
 [postgresql]
-name=pizzeria
-host=postgres
+host=host.docker.internal
 port=5432
 user=postgres
 password=PizzeriaPassword
-database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(name)s
+database=pizzeria
+database_url=postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(database)s
 use_orm=False
 
 ```
