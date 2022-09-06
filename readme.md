@@ -37,6 +37,16 @@ use_orm=False
 2. Run command: `docker-compose up -d`
 3. App should be running at: http://localhost:8000/docs
 
+## Screenshots
+
+![Example_docs_webpage.png](docs/Example_docs_webpage.png "Example docs webpage")
+
+![Example_get_menu_items.png](docs/Example_get_menu_items.png "Example get menu items")
+
+![Example_post_order.png](docs/Example_post_order.png "Example post order")
+
+![Example_addordereditem_schema.png](docs/Example_addordereditem_schema.png "Example addOrderedItem schema")
+
 ## Requirements for the simulated task
 
 - Filled menu with many positions, names, prices and categories
