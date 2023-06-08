@@ -3,7 +3,7 @@ Project for self learning purposes - featuring: API (FastAPI), containers (Docke
 
 Simulates a working pizza place.
 
-You can preview the app at: http://srv08.mikr.us:40127/docs
+You can preview the app at: http://srv18.mikr.us:40095/docs
 
 ## Setup
 
@@ -34,7 +34,7 @@ use_orm=False
 
 ```
 
-2. Run command: `docker-compose up -d`
+2. Run command: `docker compose up -d`
 3. App should be running at: http://localhost:8000/docs
 
 ## Screenshots
